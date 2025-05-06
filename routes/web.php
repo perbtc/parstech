@@ -19,7 +19,7 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PreInvoiceController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CategoriesController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -103,7 +103,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
-Route::get('categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
 
 
 require __DIR__.'/auth.php';

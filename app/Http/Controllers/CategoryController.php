@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    // اینجا می‌توانی متدهای index, create, store و ... را اضافه کنی
+    public function create()
+    {
+        return view('categories.create');
+    }
 }
