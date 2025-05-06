@@ -1,0 +1,40 @@
+/* person-create.css */
+
+.person-create {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    padding: 25px 18px 18px 18px;
+    margin-bottom: 24px;
+}
+
+.person-create label {
+    display: block;
+    margin-bottom: 7px;
+    color: #333;
+    font-size: 1rem;
+}
+
+.person-create input,
+.person-create textarea,
+.person-create select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 17px;
+    font-size: 1rem;
+}
+.person-create button {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 9px 30px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.person-create button:hover {
+    background: #218838;
+}
