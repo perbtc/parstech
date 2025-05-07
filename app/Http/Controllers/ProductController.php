@@ -5,10 +5,10 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use Illuminate\Http\Request;
-use Illuminate\Http\Request;
+
 class ProductController extends Controller
 {
-    public function upload(Request $request)
+public function upload(Request $request)
 {
     $request->validate([
         'file' => 'required|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi|max:5120'
@@ -18,9 +18,11 @@ class ProductController extends Controller
 }
 public function create()
 {
-    $categories = Category::all();
+        $categories = Category::all();
     $brands = Brand::all();
-    return view('products.create', compact('categories', 'brands'));
+    $units = Unit::all(); // حتماً مدل Unit را داری یا باید بسازی
+
+    return view('products.create', compact('categories', 'brands', 'units'));
 }
 
     public function store(Request $request)
