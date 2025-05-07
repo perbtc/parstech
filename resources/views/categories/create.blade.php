@@ -12,6 +12,22 @@
         </div>
         <div class="card-body category-create-body">
 
+            {{-- پیام موفقیت --}}
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
+            {{-- نمایش خطاها --}}
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             {{-- دکمه‌های تب‌بندی --}}
             <div class="mb-4 d-flex justify-content-center category-create-tabs">
                 <button type="button" class="btn category-create-tab-btn" id="btn-person" onclick="showTab('person')">دسته‌بندی اشخاص</button>
@@ -26,9 +42,7 @@
                 <div class="mb-3 text-center">
                     <div class="img-upload-wrapper">
                         <img id="img-person" src="{{ asset('img/category-person.png') }}" alt="پیش‌فرض اشخاص" class="img-thumbnail category-create-img" onclick="triggerFileInput('person_image')">
-                        <div class="img-overlay" onclick="triggerFileInput('person_image')">
-                            <span>تغییر</span>
-                        </div>
+                        <div class="img-overlay" onclick="triggerFileInput('person_image')"><span>تغییر</span></div>
                         <input type="file" name="image" id="person_image" class="form-control category-create-input img-hidden-input" accept="image/*" onchange="previewImage(this, 'img-person')" style="display: none;">
                     </div>
                 </div>
@@ -38,13 +52,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="person_code" class="form-label category-create-label">کد دسته‌بندی</label>
-                    <input type="text" name="code" id="person_code" class="form-control category-create-input" value="per1001" readonly>
+                    <input type="text" name="code" id="person_code" class="form-control category-create-input" value="{{ $nextPersonCode ?? 'per1001' }}" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="person_parent_id" class="form-label category-create-label">زیر دسته</label>
                     <select name="parent_id" id="person_parent_id" class="form-control category-create-input">
                         <option value="">بدون زیر دسته</option>
-                        @foreach($personCategories ?? [] as $cat)
+                        @foreach($personCategories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
                     </select>
@@ -65,9 +79,7 @@
                 <div class="mb-3 text-center">
                     <div class="img-upload-wrapper">
                         <img id="img-product" src="{{ asset('img/category-product.png') }}" alt="پیش‌فرض کالا" class="img-thumbnail category-create-img" onclick="triggerFileInput('product_image')">
-                        <div class="img-overlay" onclick="triggerFileInput('product_image')">
-                            <span>تغییر</span>
-                        </div>
+                        <div class="img-overlay" onclick="triggerFileInput('product_image')"><span>تغییر</span></div>
                         <input type="file" name="image" id="product_image" class="form-control category-create-input img-hidden-input" accept="image/*" onchange="previewImage(this, 'img-product')" style="display: none;">
                     </div>
                 </div>
@@ -77,13 +89,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="product_code" class="form-label category-create-label">کد دسته‌بندی</label>
-                    <input type="text" name="code" id="product_code" class="form-control category-create-input" value="pro1001" readonly>
+                    <input type="text" name="code" id="product_code" class="form-control category-create-input" value="{{ $nextProductCode ?? 'pro1001' }}" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="product_parent_id" class="form-label category-create-label">زیر دسته</label>
                     <select name="parent_id" id="product_parent_id" class="form-control category-create-input">
                         <option value="">بدون زیر دسته</option>
-                        @foreach($productCategories ?? [] as $cat)
+                        @foreach($productCategories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
                     </select>
@@ -104,9 +116,7 @@
                 <div class="mb-3 text-center">
                     <div class="img-upload-wrapper">
                         <img id="img-service" src="{{ asset('img/category-service.png') }}" alt="پیش‌فرض خدمات" class="img-thumbnail category-create-img" onclick="triggerFileInput('service_image')">
-                        <div class="img-overlay" onclick="triggerFileInput('service_image')">
-                            <span>تغییر</span>
-                        </div>
+                        <div class="img-overlay" onclick="triggerFileInput('service_image')"><span>تغییر</span></div>
                         <input type="file" name="image" id="service_image" class="form-control category-create-input img-hidden-input" accept="image/*" onchange="previewImage(this, 'img-service')" style="display: none;">
                     </div>
                 </div>
@@ -116,13 +126,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="service_code" class="form-label category-create-label">کد دسته‌بندی</label>
-                    <input type="text" name="code" id="service_code" class="form-control category-create-input" value="ser1001" readonly>
+                    <input type="text" name="code" id="service_code" class="form-control category-create-input" value="{{ $nextServiceCode ?? 'ser1001' }}" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="service_parent_id" class="form-label category-create-label">زیر دسته</label>
                     <select name="parent_id" id="service_parent_id" class="form-control category-create-input">
                         <option value="">بدون زیر دسته</option>
-                        @foreach($serviceCategories ?? [] as $cat)
+                        @foreach($serviceCategories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
                     </select>
@@ -141,7 +151,6 @@
 </div>
 
 <script>
-    // رنگ هر تب
     const tabColors = {
         person: {
             bg: '#1a73e8',
@@ -172,7 +181,6 @@
         document.getElementById('btn-product').classList.remove('active', 'tab-product');
         document.getElementById('btn-service').classList.remove('active', 'tab-service');
 
-        // رنگ‌بندی دکمه فعال
         document.getElementById('btn-person').style.background = 'transparent';
         document.getElementById('btn-product').style.background = 'transparent';
         document.getElementById('btn-service').style.background = 'transparent';
@@ -180,16 +188,13 @@
         document.getElementById('btn-product').style.color = '#388e3c';
         document.getElementById('btn-service').style.color = '#fbc02d';
 
-        // فعال‌سازی تب
         document.getElementById('btn-' + type).classList.add('active', tabColors[type].btnClass);
         document.getElementById('btn-' + type).style.background = tabColors[type].btn;
         document.getElementById('btn-' + type).style.color = '#fff';
 
-        // تغییر رنگ هدر و کارت
         document.getElementById('category-create-header').style.background = tabColors[type].bg;
         document.getElementById('category-create-card').style.background = tabColors[type].card;
 
-        // تغییر تیتر هدر
         let label = '';
         if (type === 'person') label = 'ایجاد دسته‌بندی اشخاص';
         if (type === 'product') label = 'ایجاد دسته‌بندی کالا';
@@ -197,7 +202,6 @@
         document.getElementById('category-create-title').textContent = label;
     }
 
-    // پیش فرض: نمایش فرم کالا
     document.addEventListener("DOMContentLoaded", function() {
         showTab('product');
     });

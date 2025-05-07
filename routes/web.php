@@ -105,4 +105,9 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 Route::resource('categories', CategoryController::class);
 
+Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+
 require __DIR__.'/auth.php';
