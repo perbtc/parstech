@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function show($id)
+{
+    $product = \App\Models\Product::with(['category', 'brand'])->findOrFail($id);
+    return view('products.show', compact('product'));
+}
+    public function index()
+{
+    $products = \App\Models\Product::with(['category', 'brand'])->latest()->paginate(20);
+    return view('products.index', compact('products'));
+}
 public function upload(Request $request)
 {
     $request->validate([
@@ -18,14 +28,16 @@ public function upload(Request $request)
 }
 public function create()
 {
-    $categories = Category::where('category_type', 'کالا')->get(); // فقط دسته‌بندی کالا
-    $brands = Brand::all();
-    $units = Unit::all();
-    return view('products.create', compact('categories', 'brands', 'units'));
+    $categories = \App\Models\Category::where('category_type', 'product')->get();
+    $brands = \App\Models\Brand::all();
+    $units = \App\Models\Unit::all();
+    $default_code = \App\Models\Product::generateProductCode();
+    return view('products.create', compact('categories', 'brands', 'units', 'default_code'));
 }
     public function store(Request $request)
     {
         $request->validate([
+            'code' => 'required|unique:products,code',
             'name'=>'required|max:191',
             'code'=>'required|unique:products,code',
             'category_id'=>'required|exists:categories,id',
@@ -41,6 +53,10 @@ public function create()
             'barcode'=>'nullable|string|max:100',
             'is_active'=>'nullable'
         ]);
+        if (empty($validated['code'])) {
+            $validated['code'] = Product::generateProductCode();
+        }
+        Product::create($validated);
         $data = $request->only([
             'name','code','category_id','brand_id','short_desc','description',
             'stock','min_stock','unit','barcode'

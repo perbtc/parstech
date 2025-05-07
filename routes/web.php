@@ -115,4 +115,6 @@ Route::post('/brands', [App\Http\Controllers\BrandController::class, 'store'])->
 Route::post('/products/upload', [App\Http\Controllers\ProductController::class, 'upload'])->name('products.upload');
 Route::post('/units', [App\Http\Controllers\UnitController::class, 'store'])->name('units.store');
 
+Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 require __DIR__.'/auth.php';

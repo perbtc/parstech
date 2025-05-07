@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    const codeInput = document.getElementById('product-code');
+    const codeSwitch = document.getElementById('code-edit-switch');
+    if (codeSwitch) {
+        codeSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                codeInput.setAttribute('readonly', 'readonly');
+                codeInput.value = codeInput.dataset.default || codeInput.value;
+            } else {
+                codeInput.removeAttribute('readonly');
+            }
+        });
+        // مقدار پیش‌فرض سوییچ فعال باشد
+        codeSwitch.checked = true;
+        codeInput.setAttribute('readonly', 'readonly');
+        codeInput.dataset.default = codeInput.value;
+    }
+
     // Dropzone گالری تصاویر
     let galleryDropzone = new Dropzone("#gallery-dropzone", {
         url: "/products/upload",

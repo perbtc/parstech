@@ -30,7 +30,15 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">کد کالا</label>
-                                <input type="text" name="code" class="form-control" value="{{ old('code') }}">
+                                <div class="input-group">
+                                    <input type="text" name="code" id="product-code" class="form-control" value="{{ old('code', $default_code) }}" readonly>
+                                    <span class="input-group-text">
+                                        <div class="form-check form-switch m-0">
+                                            <input class="form-check-input" type="checkbox" id="code-edit-switch">
+                                        </div>
+                                    </span>
+                                </div>
+                                <small class="text-muted">برای تعریف محصول سفارشی، سوییچ را غیرفعال کن تا امکان ویرایش کد فراهم شود.</small>
                             </div>
                         </div>
                         <div class="row mb-4">
