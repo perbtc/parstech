@@ -25,5 +25,25 @@
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('scripts')
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'موفق!',
+        text: '{{ session('success') }}',
+        confirmButtonText: 'باشه'
+    });
+</script>
+@endif
+@if($errors->any())
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'خطا!',
+        html: "{!! implode('<br>', $errors->all()) !!}",
+        confirmButtonText: 'باشه'
+    });
+</script>
+@endif
 </body>
 </html>

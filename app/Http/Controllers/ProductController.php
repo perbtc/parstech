@@ -35,64 +35,59 @@ public function create()
 }
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id'    => 'nullable|exists:brands,id',
             'code'        => 'required|unique:products,code',
             'image'       => 'nullable|image|max:2048',
-            'code' => 'required|unique:products,code',
-            'name'=>'required|max:191',
-            'code'=>'required|unique:products,code',
-            'category_id'=>'required|exists:categories,id',
-            'brand_id'=>'nullable|exists:brands,id',
-            'image'=>'nullable|image|max:2048',
-            'gallery.*'=>'nullable|image|max:2048',
-            'video'=>'nullable|file|mimetypes:video/mp4,video/x-m4v,video/*',
-            'short_desc'=>'nullable|max:500',
-            'description'=>'nullable',
-            'stock'=>'nullable|integer|min:0',
-            'min_stock'=>'nullable|integer|min:0',
-            'unit'=>'nullable|string|max:20',
-            'barcode'=>'nullable|string|max:100',
-            'is_active'=>'nullable'
+            'gallery.*'   => 'nullable|image|max:2048',
+            'video'       => 'nullable|file|mimetypes:video/mp4,video/x-m4v,video/*',
+            'short_desc'  => 'nullable|max:500',
+            'description' => 'nullable',
+            'stock'       => 'nullable|integer|min:0',
+            'min_stock'   => 'nullable|integer|min:0',
+            'unit'        => 'nullable|string|max:20',
+            'weight'      => 'nullable|numeric',
+            'buy_price'   => 'nullable|numeric',
+            'sell_price'  => 'nullable|numeric',
+            'discount'    => 'nullable|numeric',
+            'barcode'     => 'nullable|string|max:100',
+            'store_barcode' => 'nullable|string|max:100',
+            'is_active'   => 'nullable'
         ]);
-        if (empty($validated['code'])) {
-            $validated['code'] = Product::generateProductCode();
-        }
-        Product::create($validated);
-        $data = $request->only([
-            'name','code','category_id','brand_id','short_desc','description',
-            'stock','min_stock','unit','barcode'
-        ]);
-        $data['is_active'] = $request->has('is_active');
 
-        // Uploads
+        // ذخیره تصویر شاخص
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
-        \App\Models\Product::create($validated);
-        return redirect()->route('products.index')->with('success', 'محصول با موفقیت ذخیره شد.');
-        if($request->hasFile('gallery')){
+
+        // گالری تصاویر
+        if ($request->hasFile('gallery')) {
             $gallery_paths = [];
             foreach($request->file('gallery') as $gallery_img){
                 $gallery_paths[] = $gallery_img->store('products/gallery','public');
             }
-            $data['gallery'] = $gallery_paths;
-        }
-        if($request->hasFile('video')){
-            $data['video'] = $request->file('video')->store('products/video','public');
+            $validated['gallery'] = json_encode($gallery_paths);
         }
 
-        // برند تصویر
-        if($request->hasFile('brand_image') && $request->brand_id){
-            $brand = Brand::find($request->brand_id);
-            $brand->image = $request->file('brand_image')->store('brands','public');
-            $brand->save();
+        // ویدیو
+        if ($request->hasFile('video')) {
+            $validated['video'] = $request->file('video')->store('products/video','public');
         }
 
-        Product::create($data);
+        // فیلد فعال بودن
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
 
-        return redirect()->route('products.create')->with('success','محصول با موفقیت ثبت شد!');
+        // ویژگی‌ها (attributes)
+        if ($request->has('attributes')) {
+            $validated['attributes'] = json_encode($request->input('attributes'));
+        }
+
+        // ذخیره محصول
+        Product::create($validated);
+
+        // بازگشت با نوتیفیکیشن موفقیت
+        return redirect()->route('products.index')->with('success', 'محصول با موفقیت ذخیره شد.');
     }
 }
