@@ -5,9 +5,17 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Request;
 class ProductController extends Controller
 {
+    public function upload(Request $request)
+{
+    $request->validate([
+        'file' => 'required|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi|max:5120'
+    ]);
+    $path = $request->file('file')->store('products', 'public');
+    return response()->json(['path' => $path]);
+}
 public function create()
 {
     $categories = Category::all();

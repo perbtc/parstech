@@ -110,4 +110,8 @@ Route::post('/categories/store', [CategoryController::class, 'store'])->name('ca
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::resource('categories', CategoryController::class);
+Route::get('/brands/create', [App\Http\Controllers\BrandController::class, 'create'])->name('brands.create');
+Route::post('/brands', [App\Http\Controllers\BrandController::class, 'store'])->name('brands.store');
+Route::post('/products/upload', [App\Http\Controllers\ProductController::class, 'upload'])->name('products.upload');
+
 require __DIR__.'/auth.php';
