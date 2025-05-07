@@ -15,8 +15,11 @@ class ProductController extends Controller
 }
     public function index()
 {
-    $products = \App\Models\Product::with(['category', 'brand'])->latest()->paginate(20);
-    return view('products.index', compact('products'));}
+    $products = Product::with(['category', 'brand'])->latest()->paginate(20);
+    // توجه کن: Service مدل مربوط به خدمات است و باید ساخته شده باشد
+    $services = \App\Models\Service::with('category')->latest()->paginate(20);
+    return view('products.index', compact('products', 'services'));
+}
 public function upload(Request $request)
 {
     $request->validate([
