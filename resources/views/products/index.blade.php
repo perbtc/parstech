@@ -1,3 +1,4 @@
+<pre>{{ var_dump($products) }}</pre>
 @extends('layouts.master')
 @section('title', 'لیست محصولات')
 

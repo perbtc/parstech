@@ -16,8 +16,7 @@ class ProductController extends Controller
     public function index()
 {
     $products = \App\Models\Product::with(['category', 'brand'])->latest()->paginate(20);
-    return view('products.index', compact('products'));
-}
+    return view('products.index', compact('products'));}
 public function upload(Request $request)
 {
     $request->validate([
