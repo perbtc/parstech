@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $brands = Brand::all();
+        
         $nextProductCode = 'Product-' . (Product::count() + 10001);
         return view('products.create', compact('categories', 'brands', 'nextProductCode'));
     }

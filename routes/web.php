@@ -88,7 +88,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/in', [StockController::class, 'in'])->name('in');
         Route::get('/out', [StockController::class, 'out'])->name('out');
         Route::get('/transfer', [StockController::class, 'transfer'])->name('transfer');
-    Route::resource('products', ProductController::class)->except(['show', 'edit', 'update', 'destroy']);
     });
 
     // فروش سریع

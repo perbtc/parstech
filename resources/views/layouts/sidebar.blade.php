@@ -161,67 +161,66 @@
                 </li>
 
                                 {{-- مدیریت انبار --}}
-                <li class="nav-item has-treeview {{ request()->is('products*') || request()->is('stocks*') || request()->is('categories*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('products*') || request()->is('stocks*') || request()->is('categories*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-warehouse"></i>
-                        <p>
-                            مدیریت انبار
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="{{ route('products.create') }}" class="nav-link">
-                            <i class="far fa-circle nav-icon text-success"></i>
-                                <p>افزودن کالا</p>
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>لیست کالاها</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
-                                <i class="fas fa-box nav-icon"></i>
-                                <p>کالاها</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('stocks.in') }}" class="nav-link {{ request()->routeIs('stocks.in') ? 'active' : '' }}">
-                                <i class="fas fa-arrow-down nav-icon"></i>
-                                <p>ورود کالا</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('stocks.out') }}" class="nav-link {{ request()->routeIs('stocks.out') ? 'active' : '' }}">
-                                <i class="fas fa-arrow-up nav-icon"></i>
-                                <p>خروج کالا</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('stocks.transfer') }}" class="nav-link {{ request()->routeIs('stocks.transfer') ? 'active' : '' }}">
-                                <i class="fas fa-exchange-alt nav-icon"></i>
-                                <p>انتقال بین انبارها</p>
-                            </a>
-                        </li>
-                        {{-- دسته‌بندی --}}
-                        <li class="nav-item">
-                            <a href="{{ route('categories.create') }}" class="nav-link {{ request()->routeIs('categories.create') ? 'active' : '' }}">
-                                <i class="fas fa-tags nav-icon"></i>
-                                <p>دسته‌بندی</p>
-                            </a>
-                        </li>
-                        {{-- لیست دسته‌بندی --}}
-                        <li class="nav-item">
-                            <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
-                                <i class="fas fa-list-ul nav-icon"></i>
-                                <p>لیست دسته‌بندی</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+<li class="nav-item has-treeview {{ request()->is('products*') || request()->is('stocks*') || request()->is('categories*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ request()->is('products*') || request()->is('stocks*') || request()->is('categories*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-warehouse"></i>
+        <p>
+            مدیریت انبار
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        {{-- افزودن محصول --}}
+        <li class="nav-item">
+            <a href="{{ route('products.create') }}" class="nav-link {{ request()->routeIs('products.create') ? 'active' : '' }}">
+                <i class="fas fa-plus nav-icon text-success"></i>
+                <p>افزودن محصول</p>
+            </a>
+        </li>
+        {{-- لیست محصولات --}}
+        <li class="nav-item">
+            <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
+                <i class="fas fa-box nav-icon"></i>
+                <p>لیست محصولات</p>
+            </a>
+        </li>
+        {{-- ورود کالا --}}
+        <li class="nav-item">
+            <a href="{{ route('stocks.in') }}" class="nav-link {{ request()->routeIs('stocks.in') ? 'active' : '' }}">
+                <i class="fas fa-arrow-down nav-icon"></i>
+                <p>ورود کالا</p>
+            </a>
+        </li>
+        {{-- خروج کالا --}}
+        <li class="nav-item">
+            <a href="{{ route('stocks.out') }}" class="nav-link {{ request()->routeIs('stocks.out') ? 'active' : '' }}">
+                <i class="fas fa-arrow-up nav-icon"></i>
+                <p>خروج کالا</p>
+            </a>
+        </li>
+        {{-- انتقال بین انبارها --}}
+        <li class="nav-item">
+            <a href="{{ route('stocks.transfer') }}" class="nav-link {{ request()->routeIs('stocks.transfer') ? 'active' : '' }}">
+                <i class="fas fa-exchange-alt nav-icon"></i>
+                <p>انتقال بین انبارها</p>
+            </a>
+        </li>
+        {{-- دسته‌بندی --}}
+        <li class="nav-item">
+            <a href="{{ route('categories.create') }}" class="nav-link {{ request()->routeIs('categories.create') ? 'active' : '' }}">
+                <i class="fas fa-tags nav-icon"></i>
+                <p>دسته‌بندی</p>
+            </a>
+        </li>
+        {{-- لیست دسته‌بندی --}}
+        <li class="nav-item">
+            <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
+                <i class="fas fa-list-ul nav-icon"></i>
+                <p>لیست دسته‌بندی</p>
+            </a>
+        </li>
+    </ul>
+</li>
 
                 {{-- اشخاص --}}
                 <li class="nav-item has-treeview {{ request()->is('persons*') ? 'menu-open' : '' }}">
