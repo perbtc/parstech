@@ -26,7 +26,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">نام محصول <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control form-control-lg" required value="{{ old('name') }}">
+                                <input type="text" name="name" class="form-control" required value="{{ old('name') }}">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">کد کالا</label>

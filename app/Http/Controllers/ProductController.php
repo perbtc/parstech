@@ -37,6 +37,11 @@ public function create()
     public function store(Request $request)
     {
         $request->validate([
+            'name'        => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'brand_id'    => 'nullable|exists:brands,id',
+            'code'        => 'required|unique:products,code',
+            'image'       => 'nullable|image|max:2048',
             'code' => 'required|unique:products,code',
             'name'=>'required|max:191',
             'code'=>'required|unique:products,code',
@@ -64,9 +69,11 @@ public function create()
         $data['is_active'] = $request->has('is_active');
 
         // Uploads
-        if($request->hasFile('image')){
-            $data['image'] = $request->file('image')->store('products','public');
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('products', 'public');
         }
+        \App\Models\Product::create($validated);
+        return redirect()->route('products.index')->with('success', 'محصول با موفقیت ذخیره شد.');
         if($request->hasFile('gallery')){
             $gallery_paths = [];
             foreach($request->file('gallery') as $gallery_img){
