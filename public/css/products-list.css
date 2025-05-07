@@ -1,334 +1,43 @@
-/* =======================================================================================================================
-    Custom Products & Services DataTable Styles - Over 700 lines (extra utility classes, gradient backgrounds, RTL, etc.)
-========================================================================================================================= */
-
-/* Core Table Enhancement */
-.table thead th {
-    background: linear-gradient(90deg, #e7eaf6 0%, #f5f7fa 100%);
-    color: #2b2d42;
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 2px solid #c5c6d0;
-}
-.table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #f0f4f8;
-}
-.table-striped > tbody > tr:nth-of-type(even) {
-    background-color: #ffffff;
-}
-.table td, .table th {
-    vertical-align: middle !important;
-    text-align: center;
-    font-size: 1rem;
-}
-.table .badge {
-    font-size: .95em;
-    padding: 6px 16px;
-    border-radius: 1.5rem;
-    letter-spacing: .5px;
-}
-.table thead th,
-.table tfoot th {
-    border-bottom: 2px solid #a7bbc7;
-}
-
-/* Side menu custom */
-.sidebar {
-    background: linear-gradient(180deg, #7a7adb 0%, #e3e6f3 100%);
-    min-height: 100vh;
-    border-radius: 0 1.5rem 1.5rem 0;
-}
-
-.card {
-    border-radius: 1.5rem;
-    box-shadow: 0 3px 16px rgba(46, 67, 101, 0.10);
-    background: #fff;
-}
-.card-header {
-    background: #f7f9fa;
-    border-bottom: 1px solid #dee2e6;
-    border-radius: 1.5rem 1.5rem 0 0;
-    padding: 1.25rem 1.5rem;
-}
-.card-body {
-    padding: 2rem;
-}
-
-/* Tab Styles */
-.nav-tabs .nav-link.active {
-    background-color: #7a7adb;
-    color: #fff !important;
-    border-radius: 1rem 1rem 0 0;
-}
-.nav-tabs .nav-link {
-    color: #7a7adb;
-    font-weight: bold;
-    border: none;
-    margin-right: 10px;
-    transition: .2s;
-}
-.nav-tabs .nav-link:hover {
-    background: #e7eaf6;
-    color: #2b2d42;
-}
-
-.tab-content {
-    margin-top: 2rem;
-}
-.tab-pane {
-    animation: fadeIn .5s;
-}
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-/* Fixed Column Highlight */
-table.dataTable th,
-table.dataTable td {
-    white-space: nowrap;
-    border: 1px solid #e4e4e4;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 0.4em 1.2em;
-    margin: 0 0.2em;
-    color: #495057 !important;
-    background: #f8f9fa;
-    border-radius: 0.75rem;
-    border: 1px solid #bfc8d0;
-    font-weight: 500;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    color: #fff !important;
-    background: #7a7adb !important;
-    border: 1px solid #7a7adb;
-}
-
-/* Responsive tweaks */
-@media (max-width: 1400px) {
-    .main-content {
-        padding: 0.5rem;
-    }
-}
-@media (max-width: 992px) {
-    .main-content {
-        padding: 0.2rem;
-    }
-    .sidebar {
-        min-width: 60px;
-    }
-    .card-body {
-        padding: 1rem;
-    }
-}
-
-/* Extra custom utility classes for buttons, tables, badges, etc. */
-.btn-info, .btn-warning {
-    border-radius: 1rem;
-    font-weight: bold;
-}
-.btn-info {
-    background: #00bcd4;
-    border: none;
-}
-.btn-warning {
-    background: #ff9800;
-    border: none;
-}
-
-.scrollable-table {
-    overflow-x: auto;
-}
-.table-hover > tbody > tr:hover {
-    background-color: #e3e6f3 !important;
-    transition: background .2s;
-}
-.table td .btn {
-    margin: 0 3px;
-}
-
-/* Animate Table Rows */
-@keyframes rowHighlight {
-    0% { background: #fceabb; }
-    100% { background: inherit; }
-}
-.table tr.added-row {
-    animation: rowHighlight 2s;
-}
-
-/* Badge gradients */
-.badge.bg-success {
-    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-    color: #222;
-}
-.badge.bg-danger {
-    background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
-    color: #111;
-}
-
-/* Custom scrollbar for tables */
-.table-responsive::-webkit-scrollbar {
-    width: 10px;
-    height: 8px;
-}
-.table-responsive::-webkit-scrollbar-thumb {
-    background: #a7bbc7;
-    border-radius: 1rem;
-}
-.table-responsive::-webkit-scrollbar-track {
-    background: #f7f9fa;
-    border-radius: 1rem;
-}
-
-/* RTL Support */
-body, .table, .tab-content, .nav-tabs {
-    direction: rtl;
-}
+/* فقط استایل جدول و تب‌ها، بدون هیچ استایل برای .sidebar یا body */
 .table th, .table td {
-    text-align: right !important;
+    text-align: center;
+    vertical-align: middle;
 }
-
-/* Print styles */
-@media print {
-    .sidebar, .card-header, .nav-tabs, .btn, .badge, .dataTables_paginate, .dataTables_length, .dataTables_filter {
-        display: none !important;
-    }
-    .card-body, .main-content {
-        box-shadow: none !important;
-        padding: 0 !important;
-    }
-    table {
-        font-size: 12pt;
-        width: 100% !important;
-    }
-}
-
-/* Custom row number styling */
-.table td:first-child, .table th:first-child {
+.table th {
     background: #e7eaf6;
     font-weight: bold;
-    color: #7a7adb;
 }
-
-/* Table header sticky for scroll */
-.table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
+.table-hover tbody tr:hover {
+    background-color: #f7f8fa;
 }
-
-/* Zebra striping on hover for better readability */
-.table-hover > tbody > tr:hover > td,
-.table-hover > tbody > tr:hover > th {
-    background-color: #f3e9ff !important;
+.badge-success {
+    background: #28a745 !important;
+    color: #fff;
 }
-
-/* Custom row separator */
-.table tr {
-    border-bottom: 2px solid #f5f7fa;
+.badge-danger {
+    background: #dc3545 !important;
+    color: #fff;
 }
-
-/* Table action column styling */
-.table td:last-child, .table th:last-child {
-    min-width: 140px;
-    background: #f7f9fa;
+.card-header .nav-tabs.big-tabs {
+    border-bottom: none;
+    margin-bottom: 0;
 }
-
-/* ... (بیش از 600 خط دیگر برای utility و تزئینات مختلف، مثل gradientهای بیشتر، سایه‌های متنوع، کلاس‌های آماده برای اکشن‌ها، استایل‌های متفاوت برای انواع وضعیت و ...) ... */
-
-/* Dummy classes to make file >700 lines */
-.utility-custom-001 { color: #fff; }
-.utility-custom-002 { background: #333; }
-.utility-custom-003 { padding: 10px; }
-.utility-custom-004 { margin: 10px; }
-.utility-custom-005 { border-radius: 10px; }
-/* ... تکرار utility های تزئینی برای رسیدن به بیش از 700 خط ... */
-.utility-custom-700 { font-style: italic; }
-/* =================== Utility & Decoration (extra lines for >700) =================== */
-
-/* Gradient backgrounds */
-.bg-gradient-1 { background: linear-gradient(135deg, #f5d100 0%, #f53803 100%) !important; }
-.bg-gradient-2 { background: linear-gradient(135deg, #22c1c3 0%, #fdbb2d 100%) !important; }
-.bg-gradient-3 { background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important; }
-.bg-gradient-4 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%) !important; }
-.bg-gradient-5 { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%) !important; }
-.bg-gradient-6 { background: linear-gradient(135deg, #fdc830 0%, #f37335 100%) !important; }
-.bg-gradient-7 { background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%) !important; }
-.bg-gradient-8 { background: linear-gradient(135deg, #ffaf7b 0%, #d76d77 100%) !important; }
-/* ... همین الگو را تا bg-gradient-60 ادامه بده ... */
-
-/* Box shadows */
-.shadow-1 { box-shadow: 0 2px 8px #b3b3b3; }
-.shadow-2 { box-shadow: 0 4px 16px #aaa; }
-.shadow-3 { box-shadow: 0 6px 24px #888; }
-.shadow-4 { box-shadow: 0 8px 32px #666; }
-.shadow-inset { box-shadow: inset 0 2px 8px #dedede; }
-/* ... shadow-10 و ... */
-
-/* Row status colors */
-.status-success { background: #d4fc79 !important; }
-.status-warning { background: #ffe259 !important; }
-.status-danger { background: #ff6a6a !important; }
-.status-info { background: #74ebd5 !important; }
-.status-pending { background: #f8ffae !important; }
-.status-archive { background: #f4e2d8 !important; }
-
-/* Button utility classes */
-.btn-square { border-radius: 0 !important; }
-.btn-circle { border-radius: 50% !important; width: 32px; height: 32px; padding: 0; text-align: center; }
-.btn-gradient { background: linear-gradient(90deg, #ee9ca7 0%, #ffdde1 100%); color: #333; border: none; }
-.btn-shadow { box-shadow: 0 2px 12px #d8bfd8; }
-
-/* Custom hover effects */
-.hover-scale:hover { transform: scale(1.08); transition: .2s; }
-.hover-shadow:hover { box-shadow: 0 8px 32px #b3cdd1; transition: .2s; }
-.hover-glow:hover { box-shadow: 0 0 12px #e1bee7, 0 0 24px #ce93d8; }
-
-/* Border radius utilities */
-.radius-1 { border-radius: 4px; }
-.radius-2 { border-radius: 8px; }
-.radius-3 { border-radius: 16px; }
-.radius-4 { border-radius: 24px; }
-
-/* Text utilities */
-.text-bold { font-weight: bold !important; }
-.text-light { font-weight: 300 !important; }
-.text-italic { font-style: italic !important; }
-.text-underline { text-decoration: underline !important; }
-.text-strike { text-decoration: line-through !important; }
-.text-small { font-size: 0.85rem !important; }
-.text-large { font-size: 1.25rem !important; }
-.text-shadow { text-shadow: 1px 1px 2px #bdbdbd; }
-
-/* Margin and padding utilities */
-.m-1 { margin: 8px !important; }
-.m-2 { margin: 16px !important; }
-.m-3 { margin: 24px !important; }
-.p-1 { padding: 8px !important; }
-.p-2 { padding: 16px !important; }
-.p-3 { padding: 24px !important; }
-
-/* Divider utilities */
-.divider { border-bottom: 2px solid #ccc; margin: 12px 0; }
-.divider-dash { border-bottom: 2px dashed #aaa; margin: 12px 0; }
-.divider-dot { border-bottom: 2px dotted #888; margin: 12px 0; }
-
-/* Avatar utilities */
-.avatar-xs { width: 24px; height: 24px; border-radius: 50%; }
-.avatar-sm { width: 36px; height: 36px; border-radius: 50%; }
-.avatar-md { width: 56px; height: 56px; border-radius: 50%; }
-.avatar-lg { width: 80px; height: 80px; border-radius: 50%; }
-
-/* More dummy classes ... تا خطوط به بالای 700 برسد */
-.utility-001 { color: #f00; }
-.utility-002 { color: #0f0; }
-.utility-003 { color: #00f; }
-/* ... تا ... */
-.utility-600 { font-size: 3.2em; }
-.utility-601 { font-weight: 700; }
-.utility-602 { letter-spacing: 2px; }
-.utility-603 { word-spacing: 8px; }
-.utility-604 { opacity: 0.7; }
-/* ... تکرار تا utility-800 ... */
-.utility-800 { border-bottom: 8px double #aaa; }
+.nav-tabs.big-tabs .nav-link {
+    font-size: 1.3rem;
+    padding: 1rem 2.5rem;
+    color: #007bff;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+}
+.nav-tabs.big-tabs .nav-link.active {
+    background: #007bff;
+    color: #fff !important;
+    border-radius: 0.5rem 0.5rem 0 0;
+    box-shadow: 0 2px 8px #b3b3b3;
+}
+.nav-tabs.big-tabs .nav-link:not(.active):hover {
+    background: #e7eaf6;
+    color: #007bff;
+}
