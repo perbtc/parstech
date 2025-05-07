@@ -7,7 +7,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\QuickSaleController;
 use App\Http\Controllers\PersonController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PreInvoiceController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -88,6 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/in', [StockController::class, 'in'])->name('in');
         Route::get('/out', [StockController::class, 'out'])->name('out');
         Route::get('/transfer', [StockController::class, 'transfer'])->name('transfer');
+    Route::resource('products', ProductController::class)->except(['show', 'edit', 'update', 'destroy']);
     });
 
     // فروش سریع

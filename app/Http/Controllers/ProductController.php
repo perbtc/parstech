@@ -1,22 +1,69 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        // نمایش لیست کالاها
-        return view('products.index');
-    }
-
     public function create()
     {
-        // فرم افزودن کالای جدید
-        return view('products.create');
+        $categories = Category::all();
+        $brands = Brand::all();
+        $nextProductCode = 'Product-' . (Product::count() + 10001);
+        return view('products.create', compact('categories', 'brands', 'nextProductCode'));
     }
 
-    // سایر متدهای resource را در صورت نیاز اضافه کن
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'=>'required|max:191',
+            'code'=>'required|unique:products,code',
+            'category_id'=>'required|exists:categories,id',
+            'brand_id'=>'nullable|exists:brands,id',
+            'image'=>'nullable|image|max:2048',
+            'gallery.*'=>'nullable|image|max:2048',
+            'video'=>'nullable|file|mimetypes:video/mp4,video/x-m4v,video/*',
+            'short_desc'=>'nullable|max:500',
+            'description'=>'nullable',
+            'stock'=>'nullable|integer|min:0',
+            'min_stock'=>'nullable|integer|min:0',
+            'unit'=>'nullable|string|max:20',
+            'barcode'=>'nullable|string|max:100',
+            'is_active'=>'nullable'
+        ]);
+        $data = $request->only([
+            'name','code','category_id','brand_id','short_desc','description',
+            'stock','min_stock','unit','barcode'
+        ]);
+        $data['is_active'] = $request->has('is_active');
+
+        // Uploads
+        if($request->hasFile('image')){
+            $data['image'] = $request->file('image')->store('products','public');
+        }
+        if($request->hasFile('gallery')){
+            $gallery_paths = [];
+            foreach($request->file('gallery') as $gallery_img){
+                $gallery_paths[] = $gallery_img->store('products/gallery','public');
+            }
+            $data['gallery'] = $gallery_paths;
+        }
+        if($request->hasFile('video')){
+            $data['video'] = $request->file('video')->store('products/video','public');
+        }
+
+        // برند تصویر
+        if($request->hasFile('brand_image') && $request->brand_id){
+            $brand = Brand::find($request->brand_id);
+            $brand->image = $request->file('brand_image')->store('brands','public');
+            $brand->save();
+        }
+
+        Product::create($data);
+
+        return redirect()->route('products.create')->with('success','محصول با موفقیت ثبت شد!');
+    }
 }
