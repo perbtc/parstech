@@ -8,13 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function create()
-    {
-        $categories = Category::all();
-        
-        $nextProductCode = 'Product-' . (Product::count() + 10001);
-        return view('products.create', compact('categories', 'brands', 'nextProductCode'));
-    }
+public function create()
+{
+    $categories = Category::all();
+    $brands = Brand::all();
+    return view('products.create', compact('categories', 'brands'));
+}
 
     public function store(Request $request)
     {
