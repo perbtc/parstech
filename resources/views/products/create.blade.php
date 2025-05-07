@@ -1,214 +1,200 @@
 @extends('layouts.master')
-
 @section('title', 'افزودن محصول جدید')
 
+@section('head')
+    <link rel="stylesheet" href="{{ asset('css/products-create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sidebar-custom.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@6.0.0-beta.2/dist/dropzone.css" />
+@endsection
+
 @section('content')
-<div class="container py-4">
-    <h2 class="mb-4">افزودن محصول جدید</h2>
-    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" id="product-form">
-        @csrf
-        <!-- اطلاعات پایه -->
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">اطلاعات پایه</div>
-            <div class="card-body row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">نام محصول <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" required value="{{ old('name') }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">دسته‌بندی کالا <span class="text-danger">*</span></label>
-                    <select name="category_id" class="form-control" required>
-                        <option value="">انتخاب کنید...</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" @if(old('category_id')==$cat->id) selected @endif>{{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid product-create-page">
+    <div class="row">
+        {{-- سایدبار اصلی پروژه --}}
+        @include('layouts.sidebar')
 
-        <!-- برند -->
-        <div class="card mb-4">
-            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                برند
-                <a href="{{ route('brands.create') }}" target="_blank" class="btn btn-light btn-sm">برند جدید</a>
-            </div>
-            <div class="card-body row">
-                <div class="col-md-8 mb-3">
-                    <label class="form-label">انتخاب برند</label>
-                    <select name="brand_id" class="form-control">
-                        <option value="">بدون برند</option>
-                        @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}" @if(old('brand_id')==$brand->id) selected @endif>{{ $brand->name }}</option>
-                        @endforeach
-                    </select>
+        <div class="col-xl-10 col-lg-9 col-md-8 main-content">
+            <div class="card shadow-lg mt-4 mb-5">
+                <div class="card-header product-header">
+                    <h1 class="product-title">افزودن محصول جدید</h1>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">تصویر برند</label>
-                    <input type="file" name="brand_image" class="form-control" accept="image/*">
-                </div>
-            </div>
-        </div>
+                <div class="card-body">
+                    <form id="product-form" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
 
-        <!-- رسانه (تصویر و ویدیو) -->
-        <div class="card mb-4">
-            <div class="card-header bg-warning text-dark">تصاویر و ویدیو</div>
-            <div class="card-body">
-                <form action="{{ route('products.upload') }}" class="dropzone" id="product-dropzone">
-                    @csrf
-                    <div class="dz-message">تصاویر و ویدیوهای محصول را اینجا بکشید و رها کنید یا کلیک کنید</div>
-                </form>
-            </div>
-        </div>
-
-        <!-- انبار و موجودی  -->
-        <div class="card mb-4">
-            <div class="card-header bg-secondary text-white">انبار و موجودی</div>
-            <div class="card-body row">
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">موجودی اولیه</label>
-                    <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">حداقل موجودی هشدار</label>
-                    <input type="number" name="min_stock" class="form-control" value="{{ old('min_stock', 0) }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">قیمت خرید</label>
-                    <input type="number" name="buy_price" class="form-control" value="{{ old('buy_price') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">توضیح خرید</label>
-                    <input type="text" name="buy_description" class="form-control" value="{{ old('buy_description') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">قیمت فروش</label>
-                    <input type="number" name="sell_price" class="form-control" value="{{ old('sell_price') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">توضیح فروش</label>
-                    <input type="text" name="sell_description" class="form-control" value="{{ old('sell_description') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">محل خرید / سایت خرید</label>
-                    <input type="text" name="buy_location" class="form-control" value="{{ old('buy_location') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">شماره موبایل</label>
-                    <input type="text" name="mobile" class="form-control" value="{{ old('mobile') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">شماره تلفن</label>
-                    <input type="text" name="telephone" class="form-control" value="{{ old('telephone') }}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">واحد اندازه‌گیری</label>
-                    <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#unitModal">انتخاب واحد</button>
-                    <input type="hidden" name="unit" id="selected-unit" value="{{ old('unit') }}">
-                    <span id="unit-selected-view" class="d-block mt-2"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- سایر -->
-        <div class="card mb-4">
-            <div class="card-header bg-info text-white">سایر</div>
-            <div class="card-body row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">بارکد محصول</label>
-                    <input type="text" name="barcode" class="form-control" value="{{ old('barcode') }}">
-                    <button type="button" class="btn btn-outline-primary mt-2" onclick="generateBarcode('barcode')">ساخت بارکد</button>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">بارکد محصول (فروشگاه)</label>
-                    <input type="text" name="store_barcode" class="form-control" value="{{ old('store_barcode') }}">
-                    <button type="button" class="btn btn-outline-secondary mt-2" onclick="generateBarcode('store_barcode')">ساخت بارکد فروشگاه</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- دکمه ثبت -->
-        <div class="text-end">
-            <button type="submit" class="btn btn-success btn-lg px-4">ثبت محصول</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary btn-lg px-4">انصراف</a>
-        </div>
-    </form>
-</div>
-
-<!-- Modal: انتخاب واحد اندازه‌گیری -->
-<div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">واحدهای اندازه‌گیری</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
-            </div>
-            <div class="modal-body">
-                <ul class="list-group" id="units-list">
-                    @foreach($units as $unit)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>{{ $unit->title }}</span>
-                            <div>
-                                <button type="button" class="btn btn-sm btn-success select-unit-btn" data-unit="{{ $unit->title }}">انتخاب</button>
-                                <button type="button" class="btn btn-sm btn-warning edit-unit-btn" data-id="{{ $unit->id }}">ویرایش</button>
-                                <button type="button" class="btn btn-sm btn-danger delete-unit-btn" data-id="{{ $unit->id }}">حذف</button>
+                        <!-- اطلاعات پایه -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">نام محصول <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control form-control-lg" required value="{{ old('name') }}">
                             </div>
-                        </li>
-                    @endforeach
-                </ul>
-                <hr>
-                <form id="add-unit-form" class="d-flex gap-2">
-                    <input type="text" class="form-control" id="unit-title" placeholder="افزودن واحد جدید">
-                    <button type="submit" class="btn btn-primary">افزودن</button>
-                </form>
+                            <div class="col-md-6">
+                                <label class="form-label">کد کالا</label>
+                                <input type="text" name="code" class="form-control" value="{{ old('code') }}">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">دسته‌بندی کالا <span class="text-danger">*</span></label>
+                                <select name="category_id" class="form-select form-select-lg" required>
+                                    <option value="">انتخاب کنید...</option>
+                                    @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}" @if(old('category_id')==$cat->id) selected @endif>{{ $cat->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">برند</label>
+                                <div class="input-group">
+                                    <select name="brand_id" class="form-select">
+                                        <option value="">بدون برند</option>
+                                        @foreach($brands as $brand)
+                                            <option value="{{ $brand->id }}" @if(old('brand_id')==$brand->id) selected @endif>{{ $brand->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a href="{{ route('brands.create') }}" target="_blank" class="btn btn-outline-primary">برند جدید</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">تصویر شاخص محصول</label>
+                                <input type="file" name="image" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label">گالری تصاویر</label>
+                                <div id="gallery-dropzone" class="dropzone"></div>
+                                <input type="hidden" name="gallery[]" id="gallery-input">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">ویدیوی معرفی محصول</label>
+                                <input type="file" name="video" class="form-control" accept="video/*">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <label class="form-label">موجودی اولیه</label>
+                                <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">حداقل موجودی هشدار</label>
+                                <input type="number" name="min_stock" class="form-control" value="{{ old('min_stock', 0) }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">واحد اندازه‌گیری</label>
+                                <select name="unit" id="selected-unit" class="form-select">
+                                    <option value="">انتخاب کنید...</option>
+                                    @foreach($units as $unit)
+                                        <option value="{{ $unit->title }}" @if(old('unit')==$unit->title) selected @endif>{{ $unit->title }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="button" class="btn btn-outline-info mt-2 w-100" data-bs-toggle="modal" data-bs-target="#unitModal">
+                                    مدیریت واحدها
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">وزن (گرم)</label>
+                                <input type="number" name="weight" class="form-control" value="{{ old('weight') }}">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label">قیمت خرید</label>
+                                <input type="number" name="buy_price" class="form-control" value="{{ old('buy_price') }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">قیمت فروش</label>
+                                <input type="number" name="sell_price" class="form-control" value="{{ old('sell_price') }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">تخفیف (%)</label>
+                                <input type="number" name="discount" class="form-control" value="{{ old('discount') }}">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">توضیحات کوتاه</label>
+                                <textarea name="short_desc" class="form-control" rows="2">{{ old('short_desc') }}</textarea>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <label class="form-label">توضیحات کامل</label>
+                                <textarea name="description" class="form-control" rows="6">{{ old('description') }}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">بارکد محصول</label>
+                                <input type="text" name="barcode" class="form-control" value="{{ old('barcode') }}">
+                                <button type="button" class="btn btn-outline-primary mt-2" onclick="generateBarcode('barcode')">ساخت بارکد</button>
+                                <span class="barcode-status"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">بارکد فروشگاهی</label>
+                                <input type="text" name="store_barcode" class="form-control" value="{{ old('store_barcode') }}">
+                                <button type="button" class="btn btn-outline-secondary mt-2" onclick="generateBarcode('store_barcode')">ساخت بارکد فروشگاه</button>
+                                <span class="barcode-status"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
+                                    <label class="form-check-label" for="is_active">فعال باشد</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">ویژگی‌های محصول</label>
+                                <div id="attributes-area"></div>
+                                <button type="button" class="btn btn-outline-success mt-2" id="add-attribute">افزودن ویژگی</button>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success btn-lg px-4">ثبت محصول</button>
+                            <a href="{{ route('products.index') }}" class="btn btn-secondary btn-lg px-4">انصراف</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Dropzone CSS/JS + Bootstrap Modal -->
-<link rel="stylesheet" href="https://unpkg.com/dropzone@6.0.0-beta.2/dist/dropzone.css" />
-<script src="https://unpkg.com/dropzone@6.0.0-beta.2/dist/dropzone-min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-@section('scripts')
-<script>
-    // Dropzone تنظیمات
-    Dropzone.options.productDropzone = {
-        paramName: "file",
-        maxFilesize: 5,
-        acceptedFiles: "image/*,video/*",
-        maxFiles: 10,
-        addRemoveLinks: true,
-        headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
-        dictDefaultMessage: "تصاویر و ویدیوهای محصول را اینجا بکشید و رها کنید یا کلیک کنید",
-        success: function(file, response) {
-            // response را ذخیره کن یا نمایش بده
-        }
-    };
-
-    // انتخاب واحد اندازه‌گیری
-    document.querySelectorAll('.select-unit-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const unit = this.getAttribute('data-unit');
-            document.getElementById('selected-unit').value = unit;
-            document.getElementById('unit-selected-view').textContent = 'واحد انتخاب شده: ' + unit;
-            bootstrap.Modal.getInstance(document.getElementById('unitModal')).hide();
-        });
-    });
-
-    // افزودن واحد جدید (نمونه ساده، AJAX باید سمت سرور اضافه شود)
-    document.getElementById('add-unit-form').addEventListener('submit', function (e){
-        e.preventDefault();
-        // AJAX برای ذخیره واحد جدید...
-        alert('واحد جدید اضافه شد (نمونه)');
-    });
-
-    // ساخت بارکد (نمونه ساده)
-    function generateBarcode(field) {
-        document.querySelector('input[name="'+field+'"]').value = 'BARCODE-' + Math.floor(Math.random()*1000000);
-    }
-</script>
+<!-- Modal: مدیریت واحد اندازه‌گیری -->
+<div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">مدیریت واحدهای اندازه‌گیری</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group" id="units-list">
+                    @foreach($units as $unit)
+                        <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $unit->id }}">
+                            <span class="unit-title">{{ $unit->title }}</span>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-primary edit-unit-btn me-1">ویرایش</button>
+                                <button type="button" class="btn btn-sm btn-danger delete-unit-btn">حذف</button>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                <hr>
+                <form id="add-unit-form" class="d-flex gap-2 mt-2">
+                    <input type="text" class="form-control" id="unit-title" placeholder="واحد جدید">
+                    <button type="submit" class="btn btn-success">افزودن واحد</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
+@section('scripts')
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.2/dist/dropzone-min.js"></script>
+    <script src="{{ asset('js/products-create.js') }}"></script>
 @endsection

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'سحابداری')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Bootstrap & استایل‌های پروژه -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome-iconpicker.min.css') }}">

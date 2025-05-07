@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
+            $table->string('category_type')->default('کالا');
 
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('set null');
         });

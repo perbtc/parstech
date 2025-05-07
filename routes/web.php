@@ -113,5 +113,6 @@ Route::resource('categories', CategoryController::class);
 Route::get('/brands/create', [App\Http\Controllers\BrandController::class, 'create'])->name('brands.create');
 Route::post('/brands', [App\Http\Controllers\BrandController::class, 'store'])->name('brands.store');
 Route::post('/products/upload', [App\Http\Controllers\ProductController::class, 'upload'])->name('products.upload');
+Route::post('/units', [App\Http\Controllers\UnitController::class, 'store'])->name('units.store');
 
 require __DIR__.'/auth.php';

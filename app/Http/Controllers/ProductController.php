@@ -18,13 +18,11 @@ public function upload(Request $request)
 }
 public function create()
 {
-        $categories = Category::all();
+    $categories = Category::where('category_type', 'کالا')->get(); // فقط دسته‌بندی کالا
     $brands = Brand::all();
-    $units = Unit::all(); // حتماً مدل Unit را داری یا باید بسازی
-
+    $units = Unit::all();
     return view('products.create', compact('categories', 'brands', 'units'));
 }
-
     public function store(Request $request)
     {
         $request->validate([
