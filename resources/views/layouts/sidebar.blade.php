@@ -25,6 +25,7 @@
                     </a>
                 </li>
 
+
                 {{-- فروش --}}
                 <li class="nav-item has-treeview {{ request()->is('sales*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->is('sales*') ? 'active' : '' }}">
