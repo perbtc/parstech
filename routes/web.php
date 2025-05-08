@@ -19,6 +19,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PreInvoiceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServiceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -117,4 +118,8 @@ Route::post('/units', [App\Http\Controllers\UnitController::class, 'store'])->na
 
 Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+Route::resource('services', \App\Http\Controllers\ServiceController::class);
+
+
+
 require __DIR__.'/auth.php';

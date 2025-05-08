@@ -178,6 +178,13 @@
                 <p>افزودن محصول</p>
             </a>
         </li>
+        {{-- افزودن خدمت --}}
+        <li class="nav-item">
+            <a href="{{ route('services.create') }}" class="nav-link {{ request()->routeIs('services.create') ? 'active' : '' }}">
+                <i class="fas fa-plus nav-icon text-info"></i>
+                <p>افزودن خدمات</p>
+            </a>
+        </li>
         {{-- لیست محصولات --}}
         <li class="nav-item">
             <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
