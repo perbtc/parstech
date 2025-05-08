@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('card_number', 16)->nullable();
             $table->string('iban', 26)->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('person_id');
+            $table->foreign('person_id')->references('id')->on('persons')->onDelete('cascade');
+
         });
     }
 

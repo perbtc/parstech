@@ -52,6 +52,7 @@ return new class extends Migration
             $table->date('join_date');
 
             $table->timestamps();
+            $table->bigIncrements('id');
         });
     }
 
