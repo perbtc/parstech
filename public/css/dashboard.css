@@ -1,5 +1,7 @@
 @import url('/fonts/fonts.css');
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 body {
     font-family: 'AnjomanMax', Tahoma, sans-serif !important;
     background: #f9fafb;
@@ -287,7 +289,7 @@ body {
     }
 }
 .main-content {
-    margin-right: 270px;
+    margin-right: 260px;
     transition: margin-right 0.3s;
 }
 .sidebar.collapsed + .main-content {

@@ -120,6 +120,8 @@ Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'
 Route::get('/products/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 Route::resource('services', \App\Http\Controllers\ServiceController::class);
 
-
+Route::get('/api/invoices/next-number', function () {
+    return response()->json(['number' => 'invoices-10001']);
+});
 
 require __DIR__.'/auth.php';

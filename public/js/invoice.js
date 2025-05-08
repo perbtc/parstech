@@ -228,10 +228,13 @@ $(document).ready(function () {
     window.toggleInvoiceNumber = function () {
         const $invoiceNumber = $('#invoiceNumber');
         const isManual = $('#invoiceNumberSwitch').is(':checked');
-        $invoiceNumber.prop('readonly', !isManual);
+        $invoiceNumber.prop('readonly', !isManual); // فعال/غیرفعال کردن حالت ویرایش
+
         if (!isManual) {
-            $invoiceNumber.val($('#invoiceNumber').data('default') || '');
+            // تنظیم شماره فاکتور به صورت پیش‌فرض
+            $invoiceNumber.val('invoices-10001');
         } else {
+            // خالی کردن فیلد برای شماره‌گذاری دستی
             $invoiceNumber.val('').focus();
         }
     };
@@ -260,4 +263,5 @@ $(document).ready(function () {
         // غیر فعال کردن دکمه ثبت پس از کلیک
         $(this).find('button[type="submit"]').attr('disabled', true);
     });
+
 });

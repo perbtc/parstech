@@ -25,6 +25,7 @@
     </script>
     <style>
         body { background: #f9fafb; }
+    
     </style>
     @yield('head')
     @stack('styles')

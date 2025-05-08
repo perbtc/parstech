@@ -5,10 +5,24 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-    <link rel="stylesheet" href="{{ asset('css/invoice.css') }}">
-
-    @endpush
-
+    <link rel="stylesheet" href="{{ asset('css/invoice-create.css') }}">
+@endpush
+@section('content')
+<div class="page-wrapper">
+    <div class="sidebar">
+        <!-- محتوای سایدبار اینجا -->
+        <h3>منو</h3>
+        <nav>
+            <ul>
+                <li><a href="{{ route('dashboard') }}">داشبورد</a></li>
+                <li><a href="{{ route('invoices.index') }}">لیست فاکتورها</a></li>
+                <li><a href="{{ route('products.index') }}">محصولات</a></li>
+                <li><a href="{{ route('persons.customers') }}">مشتریان</a></li>
+                <!-- سایر آیتم‌های منو -->
+            </ul>
+        </nav>
+    </div>
+    <div class="main-content">
 <div class="container py-4">
     <div class="invoice-header">
         <h2 class="mb-4">صدور فاکتور جدید</h2>
@@ -28,9 +42,8 @@
                                 <div class="input-group-text">
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input"
-                                               id="invoiceNumberSwitch" onchange="toggleInvoiceNumber()">
-                                        <label class="custom-control-label"
-                                               for="invoiceNumberSwitch">شماره‌گذاری دستی</label>
+                                            id="invoiceNumberSwitch" onchange="toggleInvoiceNumber()">
+                                        <label class="custom-control-label" for="invoiceNumberSwitch">شماره‌گذاری دستی</label>
                                     </div>
                                 </div>
                             </div>
@@ -182,12 +195,14 @@
         </form>
     </div>
 </div>
-
+    </div><!-- پایان main-content -->
+</div><!-- پایان page-wrapper -->
+@endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/invoice.js') }}"></script>
+    <script src="{{ asset('js/invoice-create.js') }}"></script>
 @endpush

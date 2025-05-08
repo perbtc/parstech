@@ -1,0 +1,7 @@
+.main-content {
+    margin-right: 115px;
+    transition: margin-right 0.3s;
+}
+.sidebar.collapsed + .main-content {
+    margin-right: 0;
+}
