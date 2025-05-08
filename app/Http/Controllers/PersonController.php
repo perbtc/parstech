@@ -96,4 +96,13 @@ class PersonController extends Controller
         $persons = Person::latest()->paginate(10);
         return view('persons.index', compact('persons'));
     }
+    public function sellersIndex()
+    {
+        return view('persons.sellers.index');
+    }
+
+    public function sellersPage()
+    {
+        return view('persons.sellers.page');
+    }
 }

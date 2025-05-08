@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('persons', function (Blueprint $table) {  // توجه: اسم جدول 'persons' است نه 'people'
+        Schema::create('persons', function (Blueprint $table) {
             $table->id();
             $table->string('accounting_code')->nullable();
             $table->string('company_name')->nullable();
