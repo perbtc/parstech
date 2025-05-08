@@ -18,17 +18,16 @@ class ServiceController extends Controller
      * Show the form for creating a new resource.
      */
      // ServiceController
-    public function create()
-    {
-        // فقط دسته‌هایی که نوع یا نامشان شامل "خدمات" است:
-        $serviceCategories = \App\Models\Category::where('type', 'like', '%خدمات%')
-            ->orWhere('name', 'like', '%خدمات%')->get();
+public function create()
+{
+    // فقط دسته‌هایی که زیرمجموعه service هستند:
+    $serviceCategories = \App\Models\Category::where('category_type', 'service')->get();
 
-        // لیست واحدهای معمول (یا از دیتابیس بخوان)
-        $units = ['عدد', 'ساعت', 'جلسه', 'مورد', 'بسته', 'پروژه', 'ماه'];
+    // لیست واحدها (از دیتابیس یا ثابت)
+    $units = ['عدد', 'ساعت', 'جلسه', 'مورد', 'بسته', 'پروژه', 'ماه'];
 
-        return view('services.create', compact('serviceCategories', 'units'));
-    }
+    return view('services.create', compact('serviceCategories', 'units'));
+}
 
     /**
      * Store a newly created resource in storage.

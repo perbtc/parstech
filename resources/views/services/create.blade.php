@@ -37,10 +37,7 @@
                             <select name="service_category_id" id="service_category_id" class="form-control">
                                 <option value="">انتخاب کنید</option>
                                 @foreach($serviceCategories as $cat)
-                                    <option value="{{ $cat->id }}"
-                                        data-color="{{ $cat->color ?? '#FFB400' }}">
-                                        {{ $cat->name }}
-                                    </option>
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                 @endforeach
                             </select>
                         </div>
