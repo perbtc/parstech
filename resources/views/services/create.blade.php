@@ -41,7 +41,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
+                    </div>  
                     <div class="row mb-3 align-items-end">
                        <div class="col-md-3">
                             <label for="unit">واحد</label>

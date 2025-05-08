@@ -58,11 +58,25 @@ Route::middleware('auth')->group(function () {
         Route::get('/cheques', [FinancialController::class, 'cheques'])->name('cheques');
     });
 
-    // مسیرهای بخش اشخاص
-    Route::prefix('persons')->name('persons.')->group(function () {
-        Route::get('/customers', [PersonController::class, 'customers'])->name('customers');
-        Route::get('/suppliers', [PersonController::class, 'suppliers'])->name('suppliers');
+
+
+// مسیرهای مربوط به اشخاص
+Route::prefix('persons')->name('persons.')->middleware(['auth'])->group(function () {
+    Route::get('/', [PersonController::class, 'index'])->name('index');
+    Route::get('/create', [PersonController::class, 'create'])->name('customers');
+        Route::get('/create', [PersonController::class, 'create'])->name('create');
+    Route::post('/store', [PersonController::class, 'store'])->name('store');
+    Route::get('/suppliers', [PersonController::class, 'suppliers'])->name('suppliers');
+
+    // مسیرهای مربوط به فروشندگان
+    Route::prefix('sellers')->name('sellers.')->group(function () {
+        Route::get('/', [SellerController::class, 'index'])->name('index');
+        Route::get('/page', [SellerController::class, 'page'])->name('page');
     });
+});
+
+    // مسیرهای موجود قبلی
+    Route::get('/suppliers', [PersonController::class, 'suppliers'])->name('suppliers');
 
     // مسیرهای بخش گزارشات
     Route::prefix('reports')->name('reports.')->group(function () {
@@ -123,5 +137,5 @@ Route::resource('services', \App\Http\Controllers\ServiceController::class);
 Route::get('/api/invoices/next-number', function () {
     return response()->json(['number' => 'invoices-10001']);
 });
-
+Route::get('/api/customers/search', [\App\Http\Controllers\CustomerController::class, 'search'])->name('customers.search');
 require __DIR__.'/auth.php';

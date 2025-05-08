@@ -264,4 +264,61 @@ $(document).ready(function () {
         $(this).find('button[type="submit"]').attr('disabled', true);
     });
 
+    $('#customer').select2({
+    theme: 'bootstrap4',
+    dir: 'rtl',
+    language: 'fa',
+    placeholder: 'انتخاب مشتری...',
+    ajax: {
+        url: '/api/customers/search',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // کلمه جستجو
+            };
+        },
+        processResults: function (data) {
+            return {
+                results: data,
+            };
+        },
+        cache: true,
+    },
+    });
+    $(document).ready(function () {
+    // راه‌اندازی تقویم شمسی
+    $('#date').persianDatepicker({
+        initialValue: false,
+        format: 'YYYY/MM/DD',
+        autoClose: true,
+        toolbox: {
+            calendarSwitch: {
+                enabled: false
+            }
+        }
+    });
+
+    // جستجوی محصولات
+    $('#productSearch').on('input', function () {
+        let query = $(this).val();
+        if (query.length < 2) {
+            $('#productList').hide().empty();
+            return;
+        }
+
+        $.get(`/api/products/search?q=${query}`, function (data) {
+            let productList = data.map(product => `
+                <div class="product-item">
+                    <img src="${product.image}" class="product-image" alt="${product.name}">
+                    <div>
+                        <div>${product.name}</div>
+                        <small>${product.code}</small>
+                    </div>
+                </div>
+            `);
+            $('#productList').html(productList.join('')).show();
+        });
+    });
+});
 });

@@ -4,20 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomersTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('bank_cards', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->foreignId('person_id')->constrained()->onDelete('cascade');
+            $table->string('card_number', 19);
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('bank_cards');
     }
-}
+};
