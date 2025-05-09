@@ -192,24 +192,24 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-    <div class="form-group">
-        <label class="form-label">استان</label>
-        <select id="province_select" name="province" class="form-control" required>
-            <option value="">انتخاب استان</option>
-            @foreach($provinces as $prov)
-                <option value="{{ $prov->id }}">{{ $prov->name }}</option>
-            @endforeach
-        </select>
-    </div>
-</div>
+                                <div class="form-group">
+                                    <label class="form-label">استان</label>
+                                    <select id="province_select" name="province" class="form-control" required>
+                                        <option value="">انتخاب استان</option>
+                                        @foreach($provinces as $prov)
+                                            <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
-    <div class="form-group">
-        <label class="form-label">شهر</label>
-        <select id="city_select" name="city" class="form-control" required>
-            <option value="">ابتدا استان را انتخاب کنید</option>
-        </select>
-    </div>
-</div>
+                                <div class="form-group">
+                                    <label class="form-label">شهر</label>
+                                    <select id="city_select" name="city" class="form-control" required>
+                                        <option value="">ابتدا استان را انتخاب کنید</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">کد پستی</label>

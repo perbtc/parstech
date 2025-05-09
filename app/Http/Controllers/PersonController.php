@@ -17,9 +17,8 @@ class PersonController extends Controller
 
     public function create()
     {
-        return view('persons.create');
-            $provinces = \App\Models\Province::all();
-    return view('persons.create', compact('provinces'));
+        $provinces = \App\Models\Province::all();
+        return view('persons.create', compact('provinces'));
     }
 
     public function store(Request $request)
