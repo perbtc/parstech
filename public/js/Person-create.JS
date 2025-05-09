@@ -1,10 +1,55 @@
-$(document).ready(function() {
+// در ابتدای فایل اضافه کنید
+function getNextCode() {
+    $.get('/api/persons/next-code', function(response) {
+        $('input[name="accounting_code"]').val(response.code);
+    });
+}
+
+$(document).ready(function () {
+        // اضافه کردن سوییچ به فرم
+    const $accountingCodeInput = $('input[name="accounting_code"]');
+    const $container = $accountingCodeInput.parent();
+
+
+        // ایجاد سوییچ
+    const switchHtml = `
+        <div class="accounting-code-container">
+            <input type="text" name="accounting_code" class="form-control @error('accounting_code') is-invalid @enderror"
+                   value="{{ old('accounting_code') }}" required>
+            <label class="switch">
+                <input type="checkbox" id="autoCodeSwitch" checked>
+                <span class="slider"></span>
+            </label>
+            <span class="accounting-code-label">کد خودکار</span>
+        </div>
+    `;
+
+    $container.html(switchHtml);
+
+    // دریافت کد اولیه
+    getNextCode();
+
+    // غیرفعال کردن input در حالت خودکار
+    $accountingCodeInput.prop('readonly', true);
+
     // تنظیمات تقویم شمسی
     $('.datepicker').persianDatepicker({
         format: 'YYYY/MM/DD',
         autoClose: true,
         initialValue: false,
         persianDigit: false
+    });
+
+        // رویداد تغییر سوییچ
+    $('#autoCodeSwitch').change(function() {
+        const isAuto = $(this).is(':checked');
+        $accountingCodeInput.prop('readonly', isAuto);
+
+        if (isAuto) {
+            getNextCode();
+        } else {
+            $accountingCodeInput.val('').focus();
+        }
     });
 
     // افزودن حساب بانکی

@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Person;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
+    public function index()
+    {
+        $persons = Person::latest()->paginate(10);
+        return view('persons.index', compact('persons'));
+    }
+
     public function create()
     {
         return view('persons.create');
@@ -17,6 +23,7 @@ class PersonController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'accounting_code' => 'required|string|max:255|unique:persons,accounting_code',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'type' => 'required|in:customer,supplier,shareholder,employee',
@@ -28,41 +35,7 @@ class PersonController extends Controller
         try {
             DB::beginTransaction();
 
-            // ایجاد شخص
-            $person = Person::create([
-                'accounting_code' => $request->accounting_code,
-                'company_name' => $request->company_name,
-                'title' => $request->title,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'nickname' => $request->nickname,
-                'category' => $request->category,
-                'type' => $request->type,
-                'credit_limit' => $request->credit_limit,
-                'price_list' => $request->price_list,
-                'tax_type' => $request->tax_type,
-                'national_code' => $request->national_code,
-                'economic_code' => $request->economic_code,
-                'registration_number' => $request->registration_number,
-                'branch_code' => $request->branch_code,
-                'description' => $request->description,
-                'address' => $request->address,
-                'country' => $request->country,
-                'province' => $request->province,
-                'city' => $request->city,
-                'postal_code' => $request->postal_code,
-                'phone' => $request->phone,
-                'mobile' => $request->mobile,
-                'fax' => $request->fax,
-                'phone1' => $request->phone1,
-                'phone2' => $request->phone2,
-                'phone3' => $request->phone3,
-                'email' => $request->email,
-                'website' => $request->website,
-                'birth_date' => $request->birth_date,
-                'marriage_date' => $request->marriage_date,
-                'join_date' => $request->join_date,
-            ]);
+            $person = Person::create($request->all());
 
             // ذخیره حساب‌های بانکی
             if ($request->has('bank_accounts')) {
@@ -91,18 +64,128 @@ class PersonController extends Controller
         }
     }
 
-    public function index()
+    public function show(Person $person)
     {
-        $persons = Person::latest()->paginate(10);
-        return view('persons.index', compact('persons'));
+        return view('persons.show', compact('person'));
     }
+
+    public function edit(Person $person)
+    {
+        return view('persons.edit', compact('person'));
+    }
+
+    public function update(Request $request, Person $person)
+    {
+        $request->validate([
+            'accounting_code' => 'required|string|max:255|unique:persons,accounting_code,' . $person->id,
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'type' => 'required|in:customer,supplier,shareholder,employee',
+            'national_code' => 'nullable|string|size:10|unique:persons,national_code,' . $person->id,
+            'mobile' => 'nullable|string|max:11',
+            'join_date' => 'required|date',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $person->update($request->all());
+
+            // به‌روزرسانی حساب‌های بانکی
+            if ($request->has('bank_accounts')) {
+                // حذف حساب‌های قبلی
+                $person->bankAccounts()->delete();
+
+                // افزودن حساب‌های جدید
+                $bankAccounts = [];
+                for ($i = 0; $i < count($request->bank_accounts['bank_name']); $i++) {
+                    if (!empty($request->bank_accounts['bank_name'][$i])) {
+                        $bankAccounts[] = [
+                            'bank_name' => $request->bank_accounts['bank_name'][$i],
+                            'account_number' => $request->bank_accounts['account_number'][$i],
+                            'card_number' => $request->bank_accounts['card_number'][$i],
+                            'iban' => $request->bank_accounts['iban'][$i],
+                        ];
+                    }
+                }
+                $person->bankAccounts()->createMany($bankAccounts);
+            }
+
+            DB::commit();
+            return redirect()->route('persons.index')
+                ->with('success', 'اطلاعات شخص با موفقیت به‌روزرسانی شد.');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'خطا در به‌روزرسانی اطلاعات: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function destroy(Person $person)
+    {
+        try {
+            DB::beginTransaction();
+
+            // حذف حساب‌های بانکی مرتبط
+            $person->bankAccounts()->delete();
+
+            // حذف شخص
+            $person->delete();
+
+            DB::commit();
+            return redirect()->route('persons.index')
+                ->with('success', 'شخص با موفقیت حذف شد.');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'خطا در حذف اطلاعات: ' . $e->getMessage());
+        }
+    }
+
+    public function customers()
+    {
+        $persons = Person::where('type', 'customer')->latest()->paginate(10);
+        return view('persons.customers', compact('persons'));
+    }
+
+    public function suppliers()
+    {
+        $persons = Person::where('type', 'supplier')->latest()->paginate(10);
+        return view('persons.suppliers', compact('persons'));
+    }
+
     public function sellersIndex()
     {
-        return view('persons.sellers.index');
+        $persons = Person::where('type', 'seller')->latest()->paginate(10);
+        return view('persons.sellers.index', compact('persons'));
     }
 
     public function sellersPage()
     {
         return view('persons.sellers.page');
     }
+
+public function getNextCode()
+{
+    try {
+        $lastPerson = Person::where('accounting_code', 'LIKE', 'person-%')
+                           ->orderByRaw('CAST(SUBSTRING(accounting_code, 8) AS UNSIGNED) DESC')
+                           ->first();
+
+        if (!$lastPerson) {
+            return response()->json(['code' => 'person-10001']);
+        }
+
+        $lastCode = $lastPerson->accounting_code;
+        preg_match('/person-(\d+)/', $lastCode, $matches);
+        $lastNumber = isset($matches[1]) ? intval($matches[1]) : 10000;
+        $nextNumber = $lastNumber + 1;
+        $nextCode = 'person-' . $nextNumber;
+
+        return response()->json(['code' => $nextCode]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 }

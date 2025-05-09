@@ -36,7 +36,9 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])
+    ->name('persons.next-code')
+    ->middleware('auth');
     // Profile
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
@@ -118,5 +120,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/brands/create', [BrandController::class, 'create'])->name('brands.create');
     Route::post('/units', [UnitController::class, 'store'])->name('units.store');
 });
+Route::middleware('auth')->group(function () {
 
+    // اضافه کردن route برای API کد حسابداری
+    Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])->name('persons.next-code');
+});
 require __DIR__.'/auth.php';
