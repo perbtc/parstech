@@ -99,7 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Products and Categories
     Route::resource('products', ProductController::class);
     Route::post('/products/upload', [ProductController::class, 'upload'])->name('products.upload');
-    Route::resource('categories', CategoryController::class);
+    Route::resource('categories', CategoryController::class)->except(['show']);
+
     Route::resource('services', ServiceController::class);
 
     // Stock Management
@@ -125,5 +126,6 @@ Route::middleware('auth')->group(function () {
     // در کنار سایر route های persons این route را اضافه کنید
     Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])->name('persons.next-code');
 });
+Route::get('/categories/person-search', [\App\Http\Controllers\CategoryController::class, 'personSearch'])->name('categories.person-search');
 
 require __DIR__.'/auth.php';

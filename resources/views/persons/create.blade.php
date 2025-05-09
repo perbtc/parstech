@@ -5,6 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@latest/dist/css/persian-datepicker.min.css">
 <link rel="stylesheet" href="{{ asset('css/person-create.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </style>
 @endpush
@@ -88,7 +89,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">دسته‌بندی</label>
-                                    <input type="text" name="category" class="form-control" value="{{ old('category') }}">
+                                    <select id="category_select" name="category_id" class="form-control"></select>
                                 </div>
                             </div>
                         </div>
@@ -331,6 +332,27 @@
 <script src="https://unpkg.com/persian-date@latest/dist/persian-date.min.js"></script>
 <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
 <script src="{{ asset('js/person-create.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-
+<script>
+$(document).ready(function() {
+$('#category_select').select2({
+    placeholder: 'انتخاب یا جستجوی دسته‌بندی شخص',
+    ajax: {
+        url: '{{ route("categories.person-search") }}',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return { q: params.term };
+        },
+        processResults: function (data) {
+            // فقط 5 مورد اول را نمایش بده
+            return { results: data.slice(0, 5) };
+        },
+        cache: true
+    },
+    minimumInputLength: 0
+});
+});
+</script>
 @endpush

@@ -31,7 +31,17 @@ class CategoryController extends Controller
             'nextPersonCode', 'nextProductCode', 'nextServiceCode'
         ));
     }
-
+public function personSearch(Request $request)
+{
+    $query = $request->input('q');
+    $categories = \App\Models\Category::whereIn('category_type', ['اشخاص', 'person']) // اینجا!
+        ->where('name', 'like', "%$query%")
+        ->limit(20)
+        ->get(['id', 'name']);
+    return response()->json($categories->map(function($cat){
+        return ['id' => $cat->id, 'text' => $cat->name];
+    }));
+}
     public function store(Request $request)
     {
         $request->validate([
