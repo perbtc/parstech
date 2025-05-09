@@ -4,12 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ProvinceCitySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // پاک کردن داده‌های قبلی
+        Schema::disableForeignKeyConstraints();
+
         DB::table('cities')->truncate();
         DB::table('provinces')->truncate();
 
@@ -102,5 +104,7 @@ class ProvinceCitySeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+
+        Schema::enableForeignKeyConstraints();
     }
 }
