@@ -170,7 +170,7 @@ public function getNextCode()
 {
     try {
         $lastPerson = Person::where('accounting_code', 'LIKE', 'person-%')
-                           ->orderByRaw('CAST(SUBSTRING(accounting_code, 8) AS UNSIGNED) DESC')
+                           ->orderBy('created_at', 'desc')
                            ->first();
 
         if (!$lastPerson) {
@@ -178,13 +178,13 @@ public function getNextCode()
         }
 
         $lastCode = $lastPerson->accounting_code;
-        preg_match('/person-(\d+)/', $lastCode, $matches);
-        $lastNumber = isset($matches[1]) ? intval($matches[1]) : 10000;
+        $lastNumber = intval(str_replace('person-', '', $lastCode));
         $nextNumber = $lastNumber + 1;
         $nextCode = 'person-' . $nextNumber;
 
         return response()->json(['code' => $nextCode]);
     } catch (\Exception $e) {
+        \Log::error('Error in getNextCode: ' . $e->getMessage());
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }

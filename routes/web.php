@@ -121,8 +121,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/units', [UnitController::class, 'store'])->name('units.store');
 });
 Route::middleware('auth')->group(function () {
-
-    // اضافه کردن route برای API کد حسابداری
+    // قبل از require __DIR__.'/auth.php
+    // در کنار سایر route های persons این route را اضافه کنید
     Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])->name('persons.next-code');
 });
 require __DIR__.'/auth.php';

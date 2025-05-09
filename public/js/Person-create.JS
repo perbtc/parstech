@@ -1,11 +1,23 @@
 // در ابتدای فایل اضافه کنید
 function getNextCode() {
-    $.get('/api/persons/next-code', function(response) {
-        $('input[name="accounting_code"]').val(response.code);
+    $.ajax({
+        url: '/api/persons/next-code',
+        method: 'GET',
+        success: function(response) {
+            if (response.code) {
+                $('input[name="accounting_code"]').val(response.code);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching next code:', error);
+            // در صورت خطا، یک کد پیش‌فرض نمایش دهید
+            $('input[name="accounting_code"]').val('person-10001');
+        }
     });
 }
 
 $(document).ready(function () {
+    const initialValue = $('input[name="accounting_code"]').val();
         // اضافه کردن سوییچ به فرم
     const $accountingCodeInput = $('input[name="accounting_code"]');
     const $container = $accountingCodeInput.parent();
@@ -14,8 +26,7 @@ $(document).ready(function () {
         // ایجاد سوییچ
     const switchHtml = `
         <div class="accounting-code-container">
-            <input type="text" name="accounting_code" class="form-control @error('accounting_code') is-invalid @enderror"
-                   value="{{ old('accounting_code') }}" required>
+            <input type="text" name="accounting_code" class="form-control" value="${initialValue}" required>
             <label class="switch">
                 <input type="checkbox" id="autoCodeSwitch" checked>
                 <span class="slider"></span>
@@ -25,6 +36,24 @@ $(document).ready(function () {
     `;
 
     $container.html(switchHtml);
+
+        if (!initialValue && $('#autoCodeSwitch').is(':checked')) {
+        getNextCode();
+    }
+
+        $('#autoCodeSwitch').change(function() {
+        const isAuto = $(this).is(':checked');
+        $accountingCodeInput.prop('readonly', isAuto);
+
+        if (isAuto) {
+            getNextCode();
+        } else {
+            // در حالت دستی، مقدار را پاک نمی‌کنیم مگر اینکه کاربر خودش پاک کند
+            $accountingCodeInput.focus();
+        }
+    });
+        // غیرفعال کردن input در حالت خودکار
+    $accountingCodeInput.prop('readonly', true);
 
     // دریافت کد اولیه
     getNextCode();
@@ -152,4 +181,5 @@ $(document).ready(function () {
         const remainder = sum % 11;
         return (remainder < 2 && check == remainder) || (remainder >= 2 && check == 11 - remainder);
     }
+
 });
