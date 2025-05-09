@@ -12,7 +12,18 @@
 <div class="container-fluid large-form-container">
     <div class="row justify-content-center">
         <div class="col-12">
-            <form id="person-form" action="{{ route('persons.store') }}" method="POST" class="animate-fade-in">
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form id="person-form" action="{{ route('persons.store') }}" method="POST" class="animate-fade-in" novalidate>
                 @csrf
 
                 <!-- اطلاعات اصلی -->
@@ -30,7 +41,7 @@
                                         <div class="accounting-code-container">
                                             <input type="text" name="accounting_code"
                                                    id="accounting_code"
-                                                   class="form-control"
+                                                   class="form-control @error('accounting_code') is-invalid @enderror"
                                                    value="{{ old('accounting_code') }}"
                                                    required {{ old('auto_code', '1') === '1' ? 'readonly' : '' }}>
                                             <label class="switch">
@@ -42,7 +53,7 @@
                                         </div>
                                     </div>
                                     @error('accounting_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -72,7 +83,7 @@
                                         <option value="employee" {{ old('type') == 'employee' ? 'selected' : '' }}>کارمند</option>
                                     </select>
                                     @error('type')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -85,7 +96,7 @@
                                     <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
                                            value="{{ old('first_name') }}" required>
                                     @error('first_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -96,7 +107,7 @@
                                     <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
                                            value="{{ old('last_name') }}" required>
                                     @error('last_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -154,7 +165,7 @@
                                     <input type="text" name="national_code" class="form-control @error('national_code') is-invalid @enderror"
                                            value="{{ old('national_code') }}" maxlength="10" pattern="\d{10}">
                                     @error('national_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -200,23 +211,30 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-label">آدرس کامل</label>
-                                    <textarea name="address" class="form-control" rows="3">{{ old('address') }}</textarea>
+                                    <label class="form-label required-field">آدرس کامل</label>
+                                    <textarea name="address" class="form-control @error('address') is-invalid @enderror" rows="3" required>{{ old('address') }}</textarea>
+                                    @error('address')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="form-label">کشور</label>
-                                    <input type="text" name="country" class="form-control" value="{{ old('country', 'ایران') }}">
+                                    <label class="form-label required-field">کشور</label>
+                                    <input type="text" name="country" class="form-control @error('country') is-invalid @enderror"
+                                           value="{{ old('country', 'ایران') }}" required>
+                                    @error('country')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="form-label">استان</label>
+                                    <label class="form-label required-field">استان</label>
                                     <select id="province_select" name="province"
-                                            class="form-control" required data-old-value="{{ old('province') }}">
+                                            class="form-control @error('province') is-invalid @enderror" required data-old-value="{{ old('province') }}">
                                         <option value="">انتخاب استان</option>
                                         @foreach($provinces as $prov)
                                             <option value="{{ $prov->id }}" {{ old('province') == $prov->id ? 'selected' : '' }}>
@@ -224,14 +242,20 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('province')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="form-label">شهر</label>
-                                    <select id="city_select" name="city" class="form-control" required>
+                                    <label class="form-label required-field">شهر</label>
+                                    <select id="city_select" name="city" class="form-control @error('city') is-invalid @enderror" required>
                                         <option value="">ابتدا استان را انتخاب کنید</option>
                                     </select>
+                                    @error('city')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -317,7 +341,41 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div id="bank-accounts"></div>
+                        <div id="bank-accounts">
+                            @if(old('bank_accounts'))
+                                @foreach(old('bank_accounts') as $idx => $account)
+                                    <div class="bank-account-row mb-3 border rounded p-2" data-index="{{ $idx }}">
+                                        <div class="form-row">
+                                            <div class="col-md-2 mb-2">
+                                                <input type="text" name="bank_accounts[{{ $idx }}][bank_name]" class="form-control" placeholder="نام بانک"
+                                                    value="{{ $account['bank_name'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-2 mb-2">
+                                                <input type="text" name="bank_accounts[{{ $idx }}][branch]" class="form-control" placeholder="شعبه"
+                                                    value="{{ $account['branch'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-2 mb-2">
+                                                <input type="text" name="bank_accounts[{{ $idx }}][account_number]" class="form-control" placeholder="شماره حساب"
+                                                    value="{{ $account['account_number'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-2 mb-2">
+                                                <input type="text" name="bank_accounts[{{ $idx }}][card_number]" class="form-control" placeholder="شماره کارت"
+                                                    value="{{ $account['card_number'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-3 mb-2">
+                                                <input type="text" name="bank_accounts[{{ $idx }}][iban]" class="form-control" placeholder="شماره شبا"
+                                                    value="{{ $account['iban'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-1 mb-2 d-flex align-items-center">
+                                                <button type="button" class="btn btn-danger btn-sm remove-bank-account" title="حذف">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -371,7 +429,6 @@
 <script src="https://unpkg.com/persian-date@latest/dist/persian-date.min.js"></script>
 <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script>
 $(document).ready(function() {
     // دسته‌بندی (Select2 Ajax)
@@ -407,7 +464,7 @@ $(document).ready(function() {
     $('#autoCodeSwitch').on('change', function() {
         if ($(this).is(':checked')) {
             $('#accounting_code').prop('readonly', true);
-            // درخواست کد خودکار از سرور (در صورت وجود route مناسب)
+            // درخواست کد خودکار از سرور
             $.get('{{ route("persons.next-code") }}', function(data) {
                 $('#accounting_code').val(data.code);
             });
@@ -431,7 +488,12 @@ $(document).ready(function() {
             $.getJSON('/provinces/' + provinceId + '/cities', function (data) {
                 let items = '<option value="">انتخاب شهر</option>';
                 $.each(data, function (i, city) {
-                    items += `<option value="${city.id}">${city.name}</option>`;
+                    let selected = '';
+                    @if(!old('city'))
+                        // مقدار پیش‌فرض نقاب
+                        if(provinceId == 11 && city.id == 1106) selected = 'selected';
+                    @endif
+                    items += `<option value="${city.id}" ${selected}>${city.name}</option>`;
                 });
                 $('#city_select').html(items);
             }).fail(function () {
@@ -465,51 +527,66 @@ $(document).ready(function() {
             submitButton: { enabled: true }
         }
     });
-const defaultCityId = 1256; 
-    const defaultProvinceId = 11; // مقدار id خراسان رضوی در جدول provinces
-      // مقدار id نقاب در جدول cities
 
-    // اگر مقدار قبلاً انتخاب نشده (old وجود ندارد)، مقدار پیش‌فرض بگذار
-    @if(!old('province'))
-        $('#province_select').val(defaultProvinceId).trigger('change');
-    @endif
-
-    // بعد از لود شدن شهرها، شهر نقاب را انتخاب کن
-    $('#province_select').on('change', function() {
-        let provinceId = $(this).val();
-        $('#city_select').empty().append('<option value="">در حال بارگذاری...</option>');
-        if (provinceId) {
-            $.getJSON('/provinces/' + provinceId + '/cities', function (data) {
-                let items = '<option value="">انتخاب شهر</option>';
-                $.each(data, function (i, city) {
-                    let selected = '';
-                    // اگر شهر نقاب است، انتخاب شود
-                    if(provinceId == defaultProvinceId && city.id == defaultCityId && !{{ old('city') ? 'true' : 'false' }}) {
-                        selected = 'selected';
-                    }
-                    items += `<option value="${city.id}" ${selected}>${city.name}</option>`;
-                });
-                $('#city_select').html(items);
-            }).fail(function () {
-                $('#city_select').html('<option value="">خطا در دریافت شهرها</option>');
-            });
-        } else {
-            $('#city_select').html('<option value="">ابتدا استان را انتخاب کنید</option>');
-        }
+    // حساب بانکی داینامیک
+    let bankAccountIndex = $('#bank-accounts .bank-account-row').length || 0;
+    $('#add-bank-account').on('click', function() {
+        bankAccountIndex++;
+        let bankAccountHtml = `
+            <div class="bank-account-row mb-3 border rounded p-2" data-index="${bankAccountIndex}">
+                <div class="form-row">
+                    <div class="col-md-2 mb-2">
+                        <input type="text" name="bank_accounts[${bankAccountIndex}][bank_name]" class="form-control" placeholder="نام بانک">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <input type="text" name="bank_accounts[${bankAccountIndex}][branch]" class="form-control" placeholder="شعبه">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <input type="text" name="bank_accounts[${bankAccountIndex}][account_number]" class="form-control" placeholder="شماره حساب">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <input type="text" name="bank_accounts[${bankAccountIndex}][card_number]" class="form-control" placeholder="شماره کارت">
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" name="bank_accounts[${bankAccountIndex}][iban]" class="form-control" placeholder="شماره شبا">
+                    </div>
+                    <div class="col-md-1 mb-2 d-flex align-items-center">
+                        <button type="button" class="btn btn-danger btn-sm remove-bank-account" title="حذف">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('#bank-accounts').append(bankAccountHtml);
+    });
+    $(document).on('click', '.remove-bank-account', function() {
+        $(this).closest('.bank-account-row').remove();
     });
 
-    // اگر old استان و شهر داری، مثل قبل...
-    @if(old('province'))
-        $.getJSON('/provinces/{{ old('province') }}/cities', function(data){
-            let items = '<option value="">انتخاب شهر</option>';
-            $.each(data, function(i, city){
-                let selected = ({{ old('city') ?: 0 }} == city.id) ? 'selected' : '';
-                items += `<option value="${city.id}" ${selected}>${city.name}</option>`;
-            });
-            $('#city_select').html(items);
+    // نمایش ارور قرمز کنار فیلدهای الزامی (فرانت)
+    $('#person-form').on('submit', function(e) {
+        let isValid = true;
+        $(this).find('[required]').each(function(){
+            if(!$(this).val() || $(this).val().trim() === ''){
+                $(this).addClass('is-invalid');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
         });
-    @endif
-
+        if(!isValid) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: $(".is-invalid:first").offset().top - 100
+            }, 500);
+        }
+    });
+    $('input, select, textarea').on('input change', function(){
+        if($(this).val().trim() !== '') {
+            $(this).removeClass('is-invalid');
+        }
+    });
 });
 </script>
 @endpush

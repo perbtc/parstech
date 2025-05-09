@@ -23,15 +23,20 @@ public function create()
 
     public function store(Request $request)
     {
-        $request->validate([
-            'accounting_code' => 'required|string|max:255|unique:persons,accounting_code',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'type' => 'required|in:customer,supplier,shareholder,employee',
-            'national_code' => 'nullable|string|size:10|unique:persons',
-            'mobile' => 'nullable|string|max:11',
-            'join_date' => 'required|date',
-        ]);
+    $validated = $request->validate([
+        'accounting_code' => 'required|string',
+        'type' => 'required|in:customer,supplier,shareholder,employee',
+        'first_name' => 'required|string',
+        'last_name' => 'required|string',
+        'province' => 'required|exists:provinces,id',
+        'city' => 'required|exists:cities,id',
+        'address' => 'required|string',
+        'country' => 'required|string',
+        // بقیه فیلدهای ضروری
+        // 'company_name' => 'required|string',
+        // 'title' => 'required|string',
+        // ...
+    ]);
 
         try {
             DB::beginTransaction();
@@ -186,5 +191,23 @@ public function getNextCode()
         \Log::error('Error in getNextCode: ' . $e->getMessage());
         return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
+public function rules()
+{
+    return [
+        'accounting_code' => 'required|string',
+        'type' => 'required|in:customer,supplier,shareholder,employee',
+        'first_name' => 'required|string',
+        'last_name' => 'required|string',
+        'province' => 'required|exists:provinces,id',
+        'city' => 'required|exists:cities,id',
+        'address' => 'required|string',
+        'country' => 'required|string',
+        // اگر فیلدهای مهم دیگه‌ای داری همینجا اضافه کن
+        // 'company_name' => 'required|string',
+        // 'title' => 'required|string',
+        // ...
+    ];
 }
 }

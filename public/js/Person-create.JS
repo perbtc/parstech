@@ -77,7 +77,7 @@ $(document).ready(function () {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label class="form-label">شماره کارت</label>
-                            <input type="text" name="bank_accounts[card_number][]" class="form-control card-number" maxlength="16">
+                            <input type="text" name="bank_accounts[card_number][]" class="form-control card-number" maxlength="19">
                         </div>
                     </div>
                     <div class="col-md-3">
