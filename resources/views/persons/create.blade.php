@@ -5,7 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@latest/dist/css/persian-datepicker.min.css">
 <link rel="stylesheet" href="{{ asset('css/person-create.css') }}">
-    
+
 </style>
 @endpush
 
@@ -26,7 +26,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label required-field">کد حسابداری</label>
-                                    <input type="text" name="accounting_code" class="form-control @error('accounting_code') is-invalid @enderror" value="{{ old('accounting_code') }}" required>
+                                    <div id="accounting_code_container"></div>
                                     @error('accounting_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

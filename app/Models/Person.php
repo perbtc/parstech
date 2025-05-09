@@ -44,11 +44,7 @@ class Person extends Model
     'join_date',
     ];
 
-    protected $dates = [
-        'birth_date',
-        'marriage_date',
-        'join_date',
-    ];
+    protected $table = 'persons';
 
     public function bankAccounts()
     {

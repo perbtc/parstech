@@ -1,32 +1,14 @@
-// در ابتدای فایل اضافه کنید
-function getNextCode() {
-    $.ajax({
-        url: '/api/persons/next-code',
-        method: 'GET',
-        success: function(response) {
-            if (response.code) {
-                $('input[name="accounting_code"]').val(response.code);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching next code:', error);
-            // در صورت خطا، یک کد پیش‌فرض نمایش دهید
-            $('input[name="accounting_code"]').val('person-10001');
-        }
-    });
-}
 
 $(document).ready(function () {
-    const initialValue = $('input[name="accounting_code"]').val();
         // اضافه کردن سوییچ به فرم
-    const $accountingCodeInput = $('input[name="accounting_code"]');
+
     const $container = $accountingCodeInput.parent();
 
 
-        // ایجاد سوییچ
+        // ساخت input و سوییچ
     const switchHtml = `
         <div class="accounting-code-container">
-            <input type="text" name="accounting_code" class="form-control" value="${initialValue}" required>
+            <input type="text" name="accounting_code" id="accounting_code" class="form-control" required readonly>
             <label class="switch">
                 <input type="checkbox" id="autoCodeSwitch" checked>
                 <span class="slider"></span>
@@ -34,30 +16,39 @@ $(document).ready(function () {
             <span class="accounting-code-label">کد خودکار</span>
         </div>
     `;
-
+    $('#accounting_code_container').html(switchHtml);
     $container.html(switchHtml);
 
-        if (!initialValue && $('#autoCodeSwitch').is(':checked')) {
+    const $accountingCodeInput = $('#accounting_code');
+    const $autoSwitch = $('#autoCodeSwitch');
+
+        function getNextCode() {
+        $.ajax({
+            url: '/api/persons/next-code',
+            method: 'GET',
+            success: function(response) {
+                if (response.code) {
+                    $accountingCodeInput.val(response.code);
+                }
+            },
+            error: function() {
+                $accountingCodeInput.val('person-10001');
+            }
+        });
+    }
+    if ($autoSwitch.is(':checked')) {
+        $accountingCodeInput.prop('readonly', true);
         getNextCode();
     }
-
-        $('#autoCodeSwitch').change(function() {
-        const isAuto = $(this).is(':checked');
-        $accountingCodeInput.prop('readonly', isAuto);
-
-        if (isAuto) {
+        $autoSwitch.change(function() {
+        if ($(this).is(':checked')) {
+            $accountingCodeInput.prop('readonly', true);
             getNextCode();
         } else {
-            // در حالت دستی، مقدار را پاک نمی‌کنیم مگر اینکه کاربر خودش پاک کند
+            $accountingCodeInput.prop('readonly', false);
             $accountingCodeInput.focus();
         }
     });
-        // غیرفعال کردن input در حالت خودکار
-    $accountingCodeInput.prop('readonly', true);
-
-    // دریافت کد اولیه
-    getNextCode();
-
     // غیرفعال کردن input در حالت خودکار
     $accountingCodeInput.prop('readonly', true);
 
@@ -181,5 +172,4 @@ $(document).ready(function () {
         const remainder = sum % 11;
         return (remainder < 2 && check == remainder) || (remainder >= 2 && check == 11 - remainder);
     }
-
 });

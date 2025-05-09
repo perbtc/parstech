@@ -169,19 +169,17 @@ class PersonController extends Controller
 public function getNextCode()
 {
     try {
-        $lastPerson = Person::where('accounting_code', 'LIKE', 'person-%')
-                           ->orderBy('created_at', 'desc')
-                           ->first();
+        // فقط کدهایی که مثل person-12345 هستند را انتخاب کن
+        $lastPerson = \App\Models\Person::where('accounting_code', 'REGEXP', '^person-[0-9]+$')
+            ->orderByRaw('CAST(SUBSTRING(accounting_code, 8) AS UNSIGNED) DESC')
+            ->first();
 
-        if (!$lastPerson) {
-            return response()->json(['code' => 'person-10001']);
+        $nextNumber = 10001;
+        if ($lastPerson) {
+            $lastNumber = intval(substr($lastPerson->accounting_code, 7));
+            $nextNumber = $lastNumber + 1;
         }
-
-        $lastCode = $lastPerson->accounting_code;
-        $lastNumber = intval(str_replace('person-', '', $lastCode));
-        $nextNumber = $lastNumber + 1;
         $nextCode = 'person-' . $nextNumber;
-
         return response()->json(['code' => $nextCode]);
     } catch (\Exception $e) {
         \Log::error('Error in getNextCode: ' . $e->getMessage());
