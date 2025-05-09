@@ -125,4 +125,5 @@ Route::middleware('auth')->group(function () {
     // در کنار سایر route های persons این route را اضافه کنید
     Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])->name('persons.next-code');
 });
+
 require __DIR__.'/auth.php';

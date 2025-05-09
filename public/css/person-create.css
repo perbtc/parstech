@@ -237,7 +237,7 @@
         background-repeat: no-repeat;
         background-position: left 1rem center;
         background-size: 16px 12px;
-        padding-left: 2.5rem;
+        padding: 6px;
     }
 
     /* Loading state */
@@ -310,4 +310,55 @@ input:checked + .slider:before {
 
 .accounting-code-label {
     margin-left: 10px;
+}
+/* استایل سوییچ کوچک و مدرن */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 22px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 22px;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+input:checked + .slider {
+  background-color: #00b894;
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.accounting-code-label {
+  font-size: 0.95em;
+  margin-right: 8px;
+  vertical-align: middle;
 }
