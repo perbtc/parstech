@@ -14,13 +14,13 @@
         <div class="col-12">
 
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger">
+                <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
             @endif
 
             <form id="person-form" action="{{ route('persons.store') }}" method="POST" class="animate-fade-in" novalidate>

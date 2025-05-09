@@ -23,20 +23,25 @@ public function create()
 
     public function store(Request $request)
     {
-    $validated = $request->validate([
+    $rules = [
         'accounting_code' => 'required|string',
         'type' => 'required|in:customer,supplier,shareholder,employee',
-        'first_name' => 'required|string',
-        'last_name' => 'required|string',
         'province' => 'required|exists:provinces,id',
         'city' => 'required|exists:cities,id',
         'address' => 'required|string',
         'country' => 'required|string',
-        // بقیه فیلدهای ضروری
-        // 'company_name' => 'required|string',
-        // 'title' => 'required|string',
-        // ...
-    ]);
+    ];
+
+    // اگر نوع شخص "تامین‌کننده" (شرکت) بود، فقط company_name اجباری شود
+    if ($request->input('type') == 'supplier') {
+        $rules['company_name'] = 'required|string';
+    } else {
+        $rules['first_name'] = 'required|string';
+        $rules['last_name'] = 'required|string';
+    }
+
+    $validated = $request->validate($rules);
+
 
         try {
             DB::beginTransaction();

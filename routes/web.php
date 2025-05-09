@@ -36,9 +36,7 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])
-    ->name('persons.next-code')
-    ->middleware('auth');
+
     // Profile
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
@@ -130,6 +128,7 @@ Route::get('/categories/person-search', [\App\Http\Controllers\CategoryControlle
 
 Route::get('/provinces/{province}/cities', [ProvinceController::class, 'cities'])->name('provinces.cities');
 Route::get('/provinces/{province}/cities', [\App\Http\Controllers\ProvinceController::class, 'cities'])->name('provinces.cities');
+Route::post('/persons/store', [PersonController::class, 'store'])->name('persons.store');
 
 
 require __DIR__.'/auth.php';
