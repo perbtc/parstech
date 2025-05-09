@@ -465,6 +465,51 @@ $(document).ready(function() {
             submitButton: { enabled: true }
         }
     });
+const defaultCityId = 1256; 
+    const defaultProvinceId = 11; // مقدار id خراسان رضوی در جدول provinces
+      // مقدار id نقاب در جدول cities
+
+    // اگر مقدار قبلاً انتخاب نشده (old وجود ندارد)، مقدار پیش‌فرض بگذار
+    @if(!old('province'))
+        $('#province_select').val(defaultProvinceId).trigger('change');
+    @endif
+
+    // بعد از لود شدن شهرها، شهر نقاب را انتخاب کن
+    $('#province_select').on('change', function() {
+        let provinceId = $(this).val();
+        $('#city_select').empty().append('<option value="">در حال بارگذاری...</option>');
+        if (provinceId) {
+            $.getJSON('/provinces/' + provinceId + '/cities', function (data) {
+                let items = '<option value="">انتخاب شهر</option>';
+                $.each(data, function (i, city) {
+                    let selected = '';
+                    // اگر شهر نقاب است، انتخاب شود
+                    if(provinceId == defaultProvinceId && city.id == defaultCityId && !{{ old('city') ? 'true' : 'false' }}) {
+                        selected = 'selected';
+                    }
+                    items += `<option value="${city.id}" ${selected}>${city.name}</option>`;
+                });
+                $('#city_select').html(items);
+            }).fail(function () {
+                $('#city_select').html('<option value="">خطا در دریافت شهرها</option>');
+            });
+        } else {
+            $('#city_select').html('<option value="">ابتدا استان را انتخاب کنید</option>');
+        }
+    });
+
+    // اگر old استان و شهر داری، مثل قبل...
+    @if(old('province'))
+        $.getJSON('/provinces/{{ old('province') }}/cities', function(data){
+            let items = '<option value="">انتخاب شهر</option>';
+            $.each(data, function(i, city){
+                let selected = ({{ old('city') ?: 0 }} == city.id) ? 'selected' : '';
+                items += `<option value="${city.id}" ${selected}>${city.name}</option>`;
+            });
+            $('#city_select').html(items);
+        });
+    @endif
+
 });
 </script>
 @endpush
