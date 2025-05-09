@@ -17,7 +17,7 @@ class PersonController extends Controller
 
 public function create()
 {
-    $provinces = Province::orderBy('name')->get();
+    $provinces = \App\Models\Province::all();
     return view('persons.create', compact('provinces'));
 }
 

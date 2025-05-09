@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Province;
 use App\Models\City;
 use Illuminate\Http\Request;
 
@@ -12,8 +11,7 @@ class ProvinceController extends Controller
     {
         $cities = City::where('province_id', $province_id)
             ->orderBy('name')
-            ->get();
-
+            ->get(['id', 'name']);
         return response()->json($cities);
     }
 }

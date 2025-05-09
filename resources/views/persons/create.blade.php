@@ -22,36 +22,45 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <!-- کد حسابداری -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label required-field">کد حسابداری</label>
                                     <div id="accounting_code_container">
                                         <div class="accounting-code-container">
-                                            <input type="text" name="accounting_code" class="form-control" required>
+                                            <input type="text" name="accounting_code"
+                                                   id="accounting_code"
+                                                   class="form-control"
+                                                   value="{{ old('accounting_code') }}"
+                                                   required {{ old('auto_code', '1') === '1' ? 'readonly' : '' }}>
                                             <label class="switch">
-                                                <input type="checkbox" id="autoCodeSwitch" checked>
+                                                <input type="checkbox" id="autoCodeSwitch" name="auto_code"
+                                                       value="1" {{ old('auto_code', '1') === '1' ? 'checked' : '' }}>
                                                 <span class="slider"></span>
                                             </label>
                                             <span class="accounting-code-label">کد خودکار</span>
                                         </div>
                                     </div>
                                     @error('accounting_code')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+                            <!-- شرکت -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">شرکت</label>
                                     <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}">
                                 </div>
                             </div>
+                            <!-- عنوان -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">عنوان</label>
                                     <input type="text" name="title" class="form-control" value="{{ old('title') }}">
                                 </div>
                             </div>
+                            <!-- نوع -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label required-field">نوع</label>
@@ -63,40 +72,51 @@
                                         <option value="employee" {{ old('type') == 'employee' ? 'selected' : '' }}>کارمند</option>
                                     </select>
                                     @error('type')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="row">
+                            <!-- نام -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label required-field">نام</label>
-                                    <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror" value="{{ old('first_name') }}" required>
+                                    <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
+                                           value="{{ old('first_name') }}" required>
                                     @error('first_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+                            <!-- نام خانوادگی -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label required-field">نام خانوادگی</label>
-                                    <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}" required>
+                                    <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
+                                           value="{{ old('last_name') }}" required>
                                     @error('last_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+                            <!-- نام مستعار -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">نام مستعار</label>
-                                    <input type="text" name="nickname" class="form-control" value="{{ old('nickname') }}">
+                                    <input type="text" name="nickname" class="form-control"
+                                           value="{{ old('nickname') }}">
                                 </div>
                             </div>
+                            <!-- دسته‌بندی (Select2 AJAX) -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">دسته‌بندی</label>
-                                    <select id="category_select" name="category_id" class="form-control"></select>
+                                    <select id="category_select" name="category_id" class="form-control">
+                                        @if(old('category_id') && old('category_text'))
+                                            <option value="{{ old('category_id') }}" selected>{{ old('category_text') }}</option>
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -134,12 +154,13 @@
                                     <input type="text" name="national_code" class="form-control @error('national_code') is-invalid @enderror"
                                            value="{{ old('national_code') }}" maxlength="10" pattern="\d{10}">
                                     @error('national_code')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="row">
+                            <!-- سایر فیلدها... -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">کد اقتصادی</label>
@@ -194,7 +215,8 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">استان</label>
-                                    <select id="province_select" name="province" class="form-control" required data-old-value="{{ old('province') }}">
+                                    <select id="province_select" name="province"
+                                            class="form-control" required data-old-value="{{ old('province') }}">
                                         <option value="">انتخاب استان</option>
                                         @foreach($provinces as $prov)
                                             <option value="{{ $prov->id }}" {{ old('province') == $prov->id ? 'selected' : '' }}>
@@ -202,7 +224,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -216,8 +237,8 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">کد پستی</label>
-                                    <input type="text" name="postal_code" class="form-control" value="{{ old('postal_code') }}"
-                                           maxlength="10" pattern="\d{10}">
+                                    <input type="text" name="postal_code" class="form-control"
+                                           value="{{ old('postal_code') }}" maxlength="10" pattern="\d{10}">
                                 </div>
                             </div>
                         </div>
@@ -310,15 +331,13 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">تاریخ تولد</label>
-                                    <input type="text" name="birth_date" class="form-control datepicker"
-                                           value="{{ old('birth_date') }}">
+                                    <input type="text" name="birth_date" class="form-control datepicker" value="{{ old('birth_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">تاریخ ازدواج</label>
-                                    <input type="text" name="marriage_date" class="form-control datepicker"
-                                           value="{{ old('marriage_date') }}">
+                                    <input type="text" name="marriage_date" class="form-control datepicker" value="{{ old('marriage_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -352,10 +371,10 @@
 <script src="https://unpkg.com/persian-date@latest/dist/persian-date.min.js"></script>
 <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="{{ asset('js/person-create.js') }}"></script>
 
 <script>
 $(document).ready(function() {
+    // دسته‌بندی (Select2 Ajax)
     $('#category_select').select2({
         placeholder: 'انتخاب یا جستجوی دسته‌بندی شخص',
         ajax: {
@@ -370,7 +389,81 @@ $(document).ready(function() {
             },
             cache: true
         },
-        minimumInputLength: 0
+        minimumInputLength: 0,
+        language: {
+            noResults: function () {
+                return "دسته‌بندی یافت نشد";
+            }
+        }
+    });
+
+    // اگر دسته‌بندی قبلاً انتخاب شده بود (برای old)، مقدار اولیه را تنظیم کن
+    @if(old('category_id') && old('category_text'))
+        var option = new Option("{{ old('category_text') }}", "{{ old('category_id') }}", true, true);
+        $('#category_select').append(option).trigger('change');
+    @endif
+
+    // کد حسابداری: فعال/غیرفعال کردن readonly و درخواست کد خودکار
+    $('#autoCodeSwitch').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#accounting_code').prop('readonly', true);
+            // درخواست کد خودکار از سرور (در صورت وجود route مناسب)
+            $.get('{{ route("persons.next-code") }}', function(data) {
+                $('#accounting_code').val(data.code);
+            });
+        } else {
+            $('#accounting_code').prop('readonly', false);
+        }
+    });
+
+    // اگر کد خودکار فعال است و مقدار ندارد، از سرور بگیر!
+    @if(old('auto_code', '1') === '1' && !old('accounting_code'))
+        $.get('{{ route("persons.next-code") }}', function(data) {
+            $('#accounting_code').val(data.code);
+        });
+    @endif
+
+    // استان و شهر وابسته
+    $('#province_select').on('change', function() {
+        let provinceId = $(this).val();
+        $('#city_select').empty().append('<option value="">در حال بارگذاری...</option>');
+        if (provinceId) {
+            $.getJSON('/provinces/' + provinceId + '/cities', function (data) {
+                let items = '<option value="">انتخاب شهر</option>';
+                $.each(data, function (i, city) {
+                    items += `<option value="${city.id}">${city.name}</option>`;
+                });
+                $('#city_select').html(items);
+            }).fail(function () {
+                $('#city_select').html('<option value="">خطا در دریافت شهرها</option>');
+            });
+        } else {
+            $('#city_select').html('<option value="">ابتدا استان را انتخاب کنید</option>');
+        }
+    });
+
+    // اگر old استان و شهر داری، شهرها را لود کن
+    @if(old('province'))
+        $.getJSON('/provinces/{{ old('province') }}/cities', function(data){
+            let items = '<option value="">انتخاب شهر</option>';
+            $.each(data, function(i, city){
+                let selected = ({{ old('city') ?: 0 }} == city.id) ? 'selected' : '';
+                items += `<option value="${city.id}" ${selected}>${city.name}</option>`;
+            });
+            $('#city_select').html(items);
+        });
+    @endif
+
+    // تاریخ شمسی
+    $('.datepicker').persianDatepicker({
+        format: 'YYYY-MM-DD',
+        initialValue: false,
+        autoClose: true,
+        toolbox: {
+            calendarSwitch: { enabled: false },
+            todayButton: { enabled: true },
+            submitButton: { enabled: true }
+        }
     });
 });
 </script>
