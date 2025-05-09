@@ -202,9 +202,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <select id="city_select" name="city" class="form-control" required data-old-value="{{ old('city') }}">
-    <option value="">ابتدا استان را انتخاب کنید</option>
-</select>
+                                    
                                 </div>
                             </div>
                             <div class="col-md-3">
