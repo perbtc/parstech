@@ -128,6 +128,6 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/categories/person-search', [\App\Http\Controllers\CategoryController::class, 'personSearch'])->name('categories.person-search');
 Route::get('/provinces/{province}/cities', [\App\Http\Controllers\ProvinceController::class, 'cities']);
-
+Route::get('/provinces/{province}/cities', [ProvinceController::class, 'cities'])->name('provinces.cities');
 
 require __DIR__.'/auth.php';

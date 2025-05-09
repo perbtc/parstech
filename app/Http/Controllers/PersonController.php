@@ -6,7 +6,7 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Province;
 class PersonController extends Controller
 {
     public function index()
@@ -15,11 +15,11 @@ class PersonController extends Controller
         return view('persons.index', compact('persons'));
     }
 
-    public function create()
-    {
-        $provinces = \App\Models\Province::all();
-        return view('persons.create', compact('provinces'));
-    }
+public function create()
+{
+    $provinces = Province::orderBy('name')->get();
+    return view('persons.create', compact('provinces'));
+}
 
     public function store(Request $request)
     {

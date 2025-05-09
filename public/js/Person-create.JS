@@ -184,3 +184,46 @@ $('#province_select').on('change', function(){
         $('#city_select').empty().append('<option value="">ابتدا استان را انتخاب کنید</option>').trigger('change');
     }
 });
+
+// تنظیمات استان و شهر
+function setupProvinceCity() {
+    $('#province_select').on('change', function() {
+        const provinceId = $(this).val();
+        const citySelect = $('#city_select');
+
+        if (provinceId) {
+            $.get(`/provinces/${provinceId}/cities`, function(cities) {
+                citySelect.empty();
+                citySelect.append('<option value="">انتخاب شهر</option>');
+
+                cities.forEach(function(city) {
+                    citySelect.append(`<option value="${city.id}">${city.name}</option>`);
+                });
+
+                // اگر شهر قبلاً انتخاب شده بود
+                const oldCity = citySelect.data('old-value');
+                if (oldCity) {
+                    citySelect.val(oldCity);
+                }
+            });
+        } else {
+            citySelect.empty();
+            citySelect.append('<option value="">ابتدا استان را انتخاب کنید</option>');
+        }
+    });
+
+    // اگر استان از قبل انتخاب شده بود
+    const oldProvince = $('#province_select').data('old-value');
+    if (oldProvince) {
+        $('#province_select').val(oldProvince).trigger('change');
+    }
+}
+// اضافه کردن به تابع اصلی
+$(document).ready(function() {
+    setupTabs();
+    setupAccountingCode();
+    setupCategorySelect();
+    setupDatePickers();
+    setupBankAccounts();
+    setupProvinceCity(); // اضافه کردن این خط
+});

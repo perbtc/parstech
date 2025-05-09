@@ -194,12 +194,17 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">استان</label>
-                                    <select id="province_select" name="province" class="form-control" required>
+                                    <select id="province_select" name="province" class="form-control" required data-old-value="{{ old('province') }}">
                                         <option value="">انتخاب استان</option>
                                         @foreach($provinces as $prov)
-                                            <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                                            <option value="{{ $prov->id }}" {{ old('province') == $prov->id ? 'selected' : '' }}>
+                                                {{ $prov->name }}
+                                            </option>
                                         @endforeach
                                     </select>
+                                    <select id="city_select" name="city" class="form-control" required data-old-value="{{ old('city') }}">
+    <option value="">ابتدا استان را انتخاب کنید</option>
+</select>
                                 </div>
                             </div>
                             <div class="col-md-3">

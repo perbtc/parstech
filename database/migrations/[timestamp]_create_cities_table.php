@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -8,15 +9,16 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('province_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('cities');
     }
 };
