@@ -127,5 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/persons/next-code', [PersonController::class, 'getNextCode'])->name('persons.next-code');
 });
 Route::get('/categories/person-search', [\App\Http\Controllers\CategoryController::class, 'personSearch'])->name('categories.person-search');
+Route::get('/provinces/{province}/cities', [\App\Http\Controllers\ProvinceController::class, 'cities']);
+
 
 require __DIR__.'/auth.php';

@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@latest/dist/css/persian-datepicker.min.css">
 <link rel="stylesheet" href="{{ asset('css/person-create.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-</style>
 @endpush
 
 @section('content')
@@ -27,7 +25,16 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label required-field">کد حسابداری</label>
-                                    <div id="accounting_code_container"></div>
+                                    <div id="accounting_code_container">
+                                        <div class="accounting-code-container">
+                                            <input type="text" name="accounting_code" class="form-control" required>
+                                            <label class="switch">
+                                                <input type="checkbox" id="autoCodeSwitch" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                            <span class="accounting-code-label">کد خودکار</span>
+                                        </div>
+                                    </div>
                                     @error('accounting_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -125,7 +132,7 @@
                                 <div class="form-group">
                                     <label class="form-label">کد ملی</label>
                                     <input type="text" name="national_code" class="form-control @error('national_code') is-invalid @enderror"
-                           value="{{ old('national_code') }}" maxlength="10" pattern="\d{10}">
+                                           value="{{ old('national_code') }}" maxlength="10" pattern="\d{10}">
                                     @error('national_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -185,22 +192,29 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label">استان</label>
-                                    <input type="text" name="province" class="form-control" value="{{ old('province') }}">
-                                </div>
-                            </div>
+    <div class="form-group">
+        <label class="form-label">استان</label>
+        <select id="province_select" name="province" class="form-control" required>
+            <option value="">انتخاب استان</option>
+            @foreach($provinces as $prov)
+                <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label">شهر</label>
-                                    <input type="text" name="city" class="form-control" value="{{ old('city') }}">
-                                </div>
-                            </div>
+    <div class="form-group">
+        <label class="form-label">شهر</label>
+        <select id="city_select" name="city" class="form-control" required>
+            <option value="">ابتدا استان را انتخاب کنید</option>
+        </select>
+    </div>
+</div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-label">کد پستی</label>
                                     <input type="text" name="postal_code" class="form-control" value="{{ old('postal_code') }}"
-                           maxlength="10" pattern="\d{10}">
+                                           maxlength="10" pattern="\d{10}">
                                 </div>
                             </div>
                         </div>
@@ -293,19 +307,22 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">تاریخ تولد</label>
-                                    <input type="text" name="birth_date" class="form-control datepicker" value="{{ old('birth_date') }}">
+                                    <input type="text" name="birth_date" class="form-control datepicker"
+                                           value="{{ old('birth_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label">تاریخ ازدواج</label>
-                                    <input type="text" name="marriage_date" class="form-control datepicker" value="{{ old('marriage_date') }}">
+                                    <input type="text" name="marriage_date" class="form-control datepicker"
+                                           value="{{ old('marriage_date') }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label required-field">تاریخ عضویت</label>
-                                    <input type="text" name="join_date" class="form-control datepicker" value="{{ old('join_date', date('Y-m-d')) }}" required>
+                                    <input type="text" name="join_date" class="form-control datepicker"
+                                           value="{{ old('join_date', date('Y-m-d')) }}" required>
                                 </div>
                             </div>
                         </div>
@@ -331,28 +348,27 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://unpkg.com/persian-date@latest/dist/persian-date.min.js"></script>
 <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
-<script src="{{ asset('js/person-create.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ asset('js/person-create.js') }}"></script>
 
 <script>
 $(document).ready(function() {
-$('#category_select').select2({
-    placeholder: 'انتخاب یا جستجوی دسته‌بندی شخص',
-    ajax: {
-        url: '{{ route("categories.person-search") }}',
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return { q: params.term };
+    $('#category_select').select2({
+        placeholder: 'انتخاب یا جستجوی دسته‌بندی شخص',
+        ajax: {
+            url: '{{ route("categories.person-search") }}',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { q: params.term };
+            },
+            processResults: function (data) {
+                return { results: data.slice(0, 5) };
+            },
+            cache: true
         },
-        processResults: function (data) {
-            // فقط 5 مورد اول را نمایش بده
-            return { results: data.slice(0, 5) };
-        },
-        cache: true
-    },
-    minimumInputLength: 0
-});
+        minimumInputLength: 0
+    });
 });
 </script>
 @endpush

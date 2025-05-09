@@ -1,268 +1,169 @@
-/* استایل‌های کلی */
-    body {
-        direction: rtl;
-        text-align: right;
-        background-color: #f8f9fa;
-    }
+/* متغیرهای رنگ */
+:root {
+    --primary-color: #4158d0;
+    --secondary-color: #c850c0;
+    --success-color: #0abf30;
+    --danger-color: #ff4757;
+    --warning-color: #ffab00;
+    --info-color: #00d2d3;
+    --dark-color: #2f3542;
+    --light-color: #f1f2f6;
+    --border-color: #e9ecef;
+    --tab-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
 
-    /* استایل کارت‌ها */
-    .card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        margin-bottom: 25px;
-        transition: all 0.3s ease;
-    }
+/* رنگ‌های تب‌ها */
+:root {
+    --tab-main-info: linear-gradient(45deg, #4158d0, #c850c0);
+    --tab-general-info: linear-gradient(45deg, #00b09b, #96c93d);
+    --tab-address-info: linear-gradient(45deg, #ff5f6d, #ffc371);
+    --tab-contact-info: linear-gradient(45deg, #2193b0, #6dd5ed);
+    --tab-bank-info: linear-gradient(45deg, #834d9b, #d04ed6);
+    --tab-date-info: linear-gradient(45deg, #373b44, #4286f4);
+}
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-    }
+/* استایل‌های پایه */
+body {
+    font-family: Vazir, Tahoma, sans-serif;
+    background-color: var(--light-color);
+}
 
-    /* هدر کارت‌ها */
-    .card-header {
-        border-radius: 15px 15px 0 0 !important;
-        padding: 1rem 1.5rem;
-        border-bottom: 2px solid rgba(0,0,0,0.05);
-    }
+.container-fluid {
+    padding: 2rem;
+}
 
-    .card-header h5 {
-        margin: 0;
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #fff;
-    }
+/* نوار تب‌ها */
+.nav-tabs {
+    border: none;
+    background: #fff;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--tab-shadow);
+    display: flex;
+    gap: 0.5rem;
+    position: sticky;
+    top: 1rem;
+    z-index: 1000;
+}
 
-    /* رنگ‌بندی بخش‌های مختلف */
-    .card-header.main-info {
-        background: linear-gradient(45deg, #4158d0, #c850c0);
-    }
+.nav-item {
+    flex: 1;
+}
 
-    .card-header.general-info {
-        background: linear-gradient(45deg, #00b09b, #96c93d);
-    }
+.nav-tabs .nav-link {
+    border: none;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 500;
+    color: var(--dark-color);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
 
-    .card-header.address-info {
-        background: linear-gradient(45deg, #ff5f6d, #ffc371);
-    }
+.nav-tabs .nav-link.active {
+    color: #fff;
+    transform: translateY(-2px);
+}
 
-    .card-header.contact-info {
-        background: linear-gradient(45deg, #2193b0, #6dd5ed);
-    }
+/* رنگ‌های تب فعال */
+.nav-tabs .nav-link.active[href="#main-info"] { background: var(--tab-main-info); }
+.nav-tabs .nav-link.active[href="#general-info"] { background: var(--tab-general-info); }
+.nav-tabs .nav-link.active[href="#address-info"] { background: var(--tab-address-info); }
+.nav-tabs .nav-link.active[href="#contact-info"] { background: var(--tab-contact-info); }
+.nav-tabs .nav-link.active[href="#bank-info"] { background: var(--tab-bank-info); }
+.nav-tabs .nav-link.active[href="#date-info"] { background: var(--tab-date-info); }
 
-    .card-header.bank-info {
-        background: linear-gradient(45deg, #834d9b, #d04ed6);
-    }
+/* محتوای تب */
+.tab-content {
+    margin-top: 2rem;
+}
 
-    .card-header.date-info {
-        background: linear-gradient(45deg, #373b44, #4286f4);
-    }
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
 
-    /* استایل بدنه کارت */
-    .card-body {
-        padding: 1.5rem;
-        background: #ffffff;
-        border-radius: 0 0 15px 15px;
-    }
+.tab-pane.active {
+    display: block;
+}
 
-    /* فرم گروه‌ها */
-    .form-group {
-        margin-bottom: 1.5rem;
-        position: relative;
-    }
+/* کارت‌ها */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: var(--tab-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
 
-    .form-label {
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        color: #2d3436;
-    }
+.card:hover {
+    transform: translateY(-5px);
+}
 
-    .form-control {
-        border-radius: 10px;
-        border: 2px solid #e9ecef;
-        padding: 0.75rem 1rem;
-        transition: all 0.3s ease;
-    }
+.card-header {
+    border: none;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    .form-control:focus {
-        border-color: #4158d0;
-        box-shadow: 0 0 0 0.2rem rgba(65, 88, 208, 0.25);
-    }
+/* رنگ‌بندی هدر کارت‌ها */
+.card-header.main-info { background: var(--tab-main-info); color: #fff; }
+.card-header.general-info { background: var(--tab-general-info); color: #fff; }
+.card-header.address-info { background: var(--tab-address-info); color: #fff; }
+.card-header.contact-info { background: var(--tab-contact-info); color: #fff; }
+.card-header.bank-info { background: var(--tab-bank-info); color: #fff; }
+.card-header.date-info { background: var(--tab-date-info); color: #fff; }
 
-    /* استایل فیلدهای اجباری */
-    .required-field::after {
-        content: '*';
-        color: #dc3545;
-        margin-right: 4px;
-    }
+/* فرم‌ها */
+.form-group {
+    margin-bottom: 1.5rem;
+}
 
-    /* دکمه‌ها */
-    .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
 
-    .btn-primary {
-        background: linear-gradient(45deg, #4158d0, #c850c0);
-        border: none;
-    }
+.required-field::after {
+    content: '*';
+    color: var(--danger-color);
+    margin-right: 4px;
+}
 
-    .btn-primary:hover {
-        background: linear-gradient(45deg, #3448b0, #b840a0);
-        transform: translateY(-2px);
-    }
+.form-control {
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
 
-    .btn-secondary {
-        background: #6c757d;
-        border: none;
-    }
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(65, 88, 208, 0.25);
+}
 
-    /* حساب بانکی */
-    .bank-account-row {
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 2px solid #e9ecef;
-        transition: all 0.3s ease;
-    }
+/* سوییچ کد حسابداری */
+.accounting-code-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
-    .bank-account-row:hover {
-        border-color: #4158d0;
-        background: #fff;
-    }
-
-    /* دکمه حذف حساب بانکی */
-    .remove-bank-account {
-        background: #dc3545;
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        padding: 0;
-        line-height: 40px;
-        text-align: center;
-    }
-
-    .remove-bank-account:hover {
-        background: #c82333;
-        transform: rotate(90deg);
-    }
-
-    /* آیکون‌ها */
-    .section-icon {
-        margin-left: 10px;
-        font-size: 1.2rem;
-    }
-
-    /* انیمیشن‌ها */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade-in {
-        animation: fadeIn 0.5s ease forwards;
-    }
-
-    /* پیام‌های خطا */
-    .invalid-feedback {
-        font-size: 0.85rem;
-        color: #dc3545;
-        margin-top: 0.5rem;
-    }
-
-    /* تقویم شمسی */
-    .datepicker-plot-area {
-        font-family: inherit;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-
-    /* استایل موبایل */
-    @media (max-width: 768px) {
-        .card {
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .btn {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-    }
-
-    /* استایل برای فورم بزرگ */
-    .large-form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
-
-    /* استایل برای تب‌ها */
-    .nav-tabs {
-        border: none;
-        margin-bottom: 2rem;
-    }
-
-    .nav-tabs .nav-link {
-        border: none;
-        border-radius: 10px;
-        padding: 1rem 2rem;
-        margin-left: 1rem;
-        color: #6c757d;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .nav-tabs .nav-link.active {
-        background: linear-gradient(45deg, #4158d0, #c850c0);
-        color: #fff;
-    }
-
-    /* استایل برای tooltip */
-    .tooltip {
-        font-family: inherit;
-    }
-
-    /* استایل برای select */
-    select.form-control {
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: left 1rem center;
-        background-size: 16px 12px;
-        padding: 6px;
-    }
-
-    /* Loading state */
-    .loading {
-        position: relative;
-        pointer-events: none;
-    }
-
-    .loading::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255,255,255,0.8) url('loading.gif') center no-repeat;
-        border-radius: inherit;
-    }
-/* اضافه کردن به انتهای فایل */
 .switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
-    margin-right: 10px;
 }
 
 .switch input {
@@ -296,82 +197,132 @@
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background: var(--tab-main-info);
 }
 
 input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-.accounting-code-container {
+/* حساب‌های بانکی */
+.bank-account-row {
+    background: var(--light-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    border: 2px solid var(--border-color);
+}
+
+/* Select2 سفارشی‌سازی */
+.select2-container--default .select2-selection--single {
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    height: calc(1.5em + 1.5rem + 4px);
+    padding: 0.75rem 1rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: normal;
+    padding: 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+}
+
+/* انیمیشن‌ها */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تقویم شمسی */
+.datepicker-plot-area {
+    font-family: inherit;
+    border-radius: 15px;
+    box-shadow: var(--tab-shadow);
+}
+
+.datepicker-plot-area .datepicker-day-view .table-days td.selected span {
+    background: var(--tab-main-info);
+}
+
+/* دکمه‌ها */
+.form-actions {
+    position: sticky;
+    bottom: 1rem;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: var(--tab-shadow);
+    z-index: 1000;
     display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+    display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
 }
 
-.accounting-code-label {
-    margin-left: 10px;
-}
-/* استایل سوییچ کوچک و مدرن */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 56px;
-  height: 22px;
-  vertical-align: middle;
-  margin-left: 8px;
+.btn-primary {
+    background: var(--tab-main-info);
+    border: none;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.btn-primary:hover {
+    transform: translateY(-2px);
 }
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  border-radius: 22px;
-  transition: .3s;
+.btn-light {
+    background: #fff;
+    border: 2px solid var(--border-color);
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  border-radius: 50%;
-  transition: .3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,.1);
-}
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 0.5rem;
+    }
 
-input:checked + .slider {
-  background-color: #00b894;
-}
+    .nav-tabs .nav-link {
+        white-space: nowrap;
+        padding: 0.75rem 1rem;
+    }
 
-input:checked + .slider:before {
-  transform: translateX(16px);
-}
+    .container-fluid {
+        padding: 1rem;
+    }
 
-.accounting-code-label {
-  font-size: 0.95em;
-  margin-right: 8px;
-  vertical-align: middle;
+    .card-header {
+        padding: 1rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }
 .select2-container--default .select2-selection--single {
     direction: rtl;
     text-align: right;
-    font-size: 14px;
-    min-height: 38px;
 }
-.select2-results__option {
-    text-align: right;
-    font-size: 14px;
-}
-.select2-container {
-    width: 100% !important;
-}
+.select2-results__option { text-align: right; }

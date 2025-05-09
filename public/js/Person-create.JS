@@ -24,7 +24,7 @@ $(document).ready(function () {
                 <input type="checkbox" id="autoCodeSwitch" checked>
                 <span class="slider"></span>
             </label>
-            
+
         </div>
     `;
     $('#accounting_code_container').html(switchHtml);
@@ -156,5 +156,31 @@ $(document).ready(function () {
         }
         const remainder = sum % 11;
         return (remainder < 2 && check == remainder) || (remainder >= 2 && check == 11 - remainder);
+    }
+});
+// فعالسازی select2
+$('#province_select, #city_select').select2({
+    placeholder: 'انتخاب کنید',
+    width: '100%'
+});
+
+// واکنش به تغییر استان
+$('#province_select').on('change', function(){
+    let provinceId = $(this).val();
+    $('#city_select').empty().append('<option value="">در حال بارگذاری...</option>').trigger('change');
+    if(provinceId) {
+        $.getJSON('/provinces/' + provinceId + '/cities', function(data){
+            let items = [{id: '', text: 'انتخاب شهر'}];
+            $.each(data, function(i, city){
+                items.push({id: city.id, text: city.text});
+            });
+            $('#city_select').empty().select2({
+                data: items,
+                placeholder: 'انتخاب شهر',
+                width: '100%'
+            });
+        });
+    } else {
+        $('#city_select').empty().append('<option value="">ابتدا استان را انتخاب کنید</option>').trigger('change');
     }
 });
