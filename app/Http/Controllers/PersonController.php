@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Morilog\Jalali\Jalalian;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Exception;
@@ -22,7 +22,19 @@ public function create()
 }
 
     public function store(Request $request)
-    {
+{
+    // تبدیل تاریخ شمسی به میلادی (اگر از jalalian استفاده می‌کنی)
+    foreach (['join_date', 'birth_date', 'marriage_date'] as $dateField) {
+        if ($request->has($dateField) && $request->$dateField) {
+            try {
+                $request[$dateField] = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $request->$dateField)->toCarbon()->toDateString();
+            } catch (\Exception $e) {
+                $request[$dateField] = null;
+            }
+        }
+    }
+
+    // اعتبارسنجی
     $rules = [
         'accounting_code' => 'required|string',
         'type' => 'required|in:customer,supplier,shareholder,employee',
@@ -32,7 +44,7 @@ public function create()
         'country' => 'required|string',
     ];
 
-    // اگر نوع شخص "تامین‌کننده" (شرکت) بود، فقط company_name اجباری شود
+    // اگر تامین‌کننده (شرکت) بود فقط company_name اجباری شود
     if ($request->input('type') == 'supplier') {
         $rules['company_name'] = 'required|string';
     } else {
@@ -40,40 +52,50 @@ public function create()
         $rules['last_name'] = 'required|string';
     }
 
+    // فیلدهای اختیاری دیگر
+    $optionalFields = [
+        'nickname', 'credit_limit', 'price_list', 'tax_type', 'national_code', 'economic_code',
+        'registration_number', 'branch_code', 'description', 'postal_code', 'phone', 'mobile', 'fax',
+        'phone1', 'phone2', 'phone3', 'email', 'website', 'birth_date', 'marriage_date', 'join_date'
+    ];
+    foreach ($optionalFields as $field) {
+        $rules[$field] = 'nullable';
+    }
+
     $validated = $request->validate($rules);
 
+    try {
+        DB::beginTransaction();
 
-        try {
-            DB::beginTransaction();
+        // فقط اطلاعات شخص را ذخیره کن (بدون bank_accounts)
+        $person = Person::create($request->except(['bank_accounts']));
 
-            $person = Person::create($request->all());
-
-            // ذخیره حساب‌های بانکی
-            if ($request->has('bank_accounts')) {
-                $bankAccounts = [];
-                for ($i = 0; $i < count($request->bank_accounts['bank_name']); $i++) {
-                    if (!empty($request->bank_accounts['bank_name'][$i])) {
-                        $bankAccounts[] = [
-                            'bank_name' => $request->bank_accounts['bank_name'][$i],
-                            'account_number' => $request->bank_accounts['account_number'][$i],
-                            'card_number' => $request->bank_accounts['card_number'][$i],
-                            'iban' => $request->bank_accounts['iban'][$i],
-                        ];
-                    }
+        // ذخیره حساب‌های بانکی (اگر ارسال شده)
+        if ($request->has('bank_accounts')) {
+            $bankAccounts = [];
+            foreach ($request->bank_accounts as $account) {
+                if (!empty($account['bank_name'])) {
+                    $bankAccounts[] = [
+                        'bank_name' => $account['bank_name'],
+                        'branch' => $account['branch'] ?? null,
+                        'account_number' => $account['account_number'] ?? null,
+                        'card_number' => $account['card_number'] ?? null,
+                        'iban' => $account['iban'] ?? null,
+                    ];
                 }
+            }
+            if (!empty($bankAccounts)) {
                 $person->bankAccounts()->createMany($bankAccounts);
             }
-
-            DB::commit();
-            return redirect()->route('persons.index')
-                ->with('success', 'شخص جدید با موفقیت ایجاد شد.');
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'خطا در ثبت اطلاعات: ' . $e->getMessage())
-                ->withInput();
         }
+
+        DB::commit();
+        return redirect()->route('persons.index')->with('success', 'شخص جدید با موفقیت ایجاد شد.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('error', 'خطا در ثبت اطلاعات: ' . $e->getMessage())->withInput();
     }
+}
 
     public function show(Person $person)
     {

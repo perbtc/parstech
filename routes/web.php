@@ -128,7 +128,6 @@ Route::get('/categories/person-search', [\App\Http\Controllers\CategoryControlle
 
 Route::get('/provinces/{province}/cities', [ProvinceController::class, 'cities'])->name('provinces.cities');
 Route::get('/provinces/{province}/cities', [\App\Http\Controllers\ProvinceController::class, 'cities'])->name('provinces.cities');
-Route::post('/persons/store', [PersonController::class, 'store'])->name('persons.store');
-
+Route::resource('persons', \App\Http\Controllers\PersonController::class);
 
 require __DIR__.'/auth.php';

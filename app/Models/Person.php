@@ -46,10 +46,10 @@ class Person extends Model
 
     protected $table = 'persons';
 
-    public function bankAccounts()
-    {
-        return $this->hasMany(BankAccount::class);
-    }
+  public function bankAccounts()
+{
+    return $this->hasMany(\App\Models\BankAccount::class, 'person_id');
+}
 
     // اعتبارسنجی کد ملی
     public static function validateNationalCode($code)

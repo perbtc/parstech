@@ -10,14 +10,16 @@ class BankAccount extends Model
     use HasFactory;
 
     protected $fillable = [
+        'person_id',
         'bank_name',
+        'branch',
         'account_number',
         'card_number',
-        'iban',
+        'iban'
     ];
 
     public function person()
     {
-        return $this->belongsTo(Person::class);
+        return $this->belongsTo(\App\Models\Person::class, 'person_id');
     }
 }
