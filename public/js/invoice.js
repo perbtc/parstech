@@ -289,14 +289,10 @@ $(document).ready(function () {
     $(document).ready(function () {
     // راه‌اندازی تقویم شمسی
     $('#date').persianDatepicker({
-        initialValue: false,
-        format: 'YYYY/MM/DD',
-        autoClose: true,
-        toolbox: {
-            calendarSwitch: {
-                enabled: false
-            }
-        }
+    format: 'YYYY/MM/DD',
+    autoClose: true,
+    initialValue: true,
+    persianDigit: true
     });
 
     // جستجوی محصولات

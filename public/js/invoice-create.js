@@ -73,17 +73,19 @@ function initializeSelect2() {
 function initializeDatePickers() {
     // تنظیم تقویم شمسی برای تاریخ فاکتور
     $('#date').persianDatepicker({
-        format: 'YYYY/MM/DD',
-        autoClose: true,
-        initialValue: true
-    });
+    format: 'YYYY/MM/DD',
+    autoClose: true,
+    initialValue: true,
+    persianDigit: true
+});
 
     // تنظیم تقویم شمسی برای تاریخ سررسید
     $('#dueDate').persianDatepicker({
-        format: 'YYYY/MM/DD',
-        autoClose: true,
-        initialValue: false
-    });
+    format: 'YYYY/MM/DD',
+    autoClose: true,
+    initialValue: true,
+    persianDigit: true
+});
 }
 
 function initializeInvoiceNumberToggle() {
@@ -264,6 +266,30 @@ $(document).ready(function() {
         } else {
             $('#number').val('');
             $('#number').prop('readonly', false);
+        }
+    });
+});
+
+$(document).ready(function () {
+    $('#customer_select').select2({
+        theme: 'bootstrap4',
+        dir: 'rtl',
+        language: 'fa',
+        placeholder: 'انتخاب مشتری...',
+        minimumInputLength: 2,
+        ajax: {
+            url: '/api/persons/search',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { q: params.term };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.results
+                };
+            },
+            cache: true
         }
     });
 });

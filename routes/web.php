@@ -132,4 +132,7 @@ Route::get('/provinces/{province}/cities', [ProvinceController::class, 'cities']
 Route::get('/provinces/{province}/cities', [\App\Http\Controllers\ProvinceController::class, 'cities'])->name('provinces.cities');
 Route::resource('persons', \App\Http\Controllers\PersonController::class);
 Route::get('/invoices/next-number', [InvoiceController::class, 'getNextNumber'])->name('invoices.next-number');
+
+Route::get('/api/persons/search', [App\Http\Controllers\PersonController::class, 'searchAjax'])->name('persons.search.ajax');
+
 require __DIR__.'/auth.php';

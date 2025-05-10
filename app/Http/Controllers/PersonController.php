@@ -252,4 +252,26 @@ public function rules()
         // ...
     ];
 }
+
+    public function searchAjax(Request $request)
+    {
+        $term = $request->input('q');
+        $query = \App\Models\Person::query();
+        if ($term) {
+            $query->where('first_name', 'like', "%$term%")
+                ->orWhere('last_name', 'like', "%$term%")
+                ->orWhere('mobile', 'like', "%$term%");
+        }
+        $persons = $query->limit(20)->get();
+
+        $results = [];
+        foreach ($persons as $person) {
+            $results[] = [
+                'id' => $person->id,
+                'text' => $person->first_name . ' ' . $person->last_name . ' (' . $person->mobile . ')',
+            ];
+        }
+
+        return response()->json(['results' => $results]);
+    }
 }

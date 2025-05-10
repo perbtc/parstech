@@ -32,22 +32,27 @@
 
             <div class="row">
                 <!-- شماره فاکتور -->
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                     <div class="form-group">
-                        <label class="form-label required-field" for="number">شماره فاکتور</label>
+                        <label for="invoiceNumber">شماره فاکتور</label>
                         <div class="input-group">
-                            <input type="text" name="number" id="number" class="form-control"
-                                value="{{ old('number') }}" readonly required>
-                            <div class="input-group-append ms-2">
-                                <div class="form-check form-switch mt-2">
-                                    <input class="form-check-input" type="checkbox" id="autoNumberSwitch" name="auto_number" value="1" checked>
-                                    <label class="form-check-label small" for="autoNumberSwitch">شماره اتوماتیک</label>
+                            <input type="text" id="invoiceNumber" name="invoiceNumber"
+                                class="form-control" value="{{ old('invoiceNumber', $nextInvoiceNumber ?? '') }}" readonly required>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input"
+                                            id="invoiceNumberSwitch">
+                                        <label class="custom-control-label" for="invoiceNumberSwitch">
+                                            شماره‌گذاری دستی
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <small class="form-text text-muted">
-                            اگر فعال باشد شماره فاکتور اتوماتیک تولید می‌شود و قابل ویرایش نیست.
-                        </small>
+                        @error('invoiceNumber')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
 
@@ -68,7 +73,7 @@
                 <div class="form-group">
                     <label class="form-label required-field">تاریخ صدور فاکتور</label>
                     <input type="text" name="date" id="date" class="form-control datepicker"
-                        value="{{ old('date', jdate()->format('Y-m-d')) }}" required autocomplete="off">
+                        value="{{ old('date', jdate()->format('Y/m/d')) }}" required autocomplete="off">
                     <small class="form-text text-muted">تاریخ صدور فاکتور (ثبت فاکتور)</small>
                 </div>
             </div>
@@ -83,9 +88,6 @@
                 </div>
             </div>
         </div>
-
-                <!-- مشتری -->
-
         {{-- مشتری --}}
         <div class="row mb-3">
             <div class="col-md-6">
@@ -98,7 +100,6 @@
                 </div>
             </div>
         </div>
-
                 <!-- واحد پول -->
                 <div class="col-md-4 mb-3">
                     <div class="form-group">
@@ -199,4 +200,40 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/invoice-create.js') }}"></script>
-@endpush
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.full.min.js"></script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // مقدار شماره فاکتور را هنگام لود از سرور بگیر
+    fetch('/invoices/next-number')
+        .then(res => res.json())
+        .then(data => {
+            let invoiceNumberInput = document.getElementById('invoiceNumber');
+            invoiceNumberInput.value = data.number;
+        });
+
+    // مدیریت سوییچ شماره دستی
+    let invoiceNumberInput = document.getElementById('invoiceNumber');
+    let invoiceNumberSwitch = document.getElementById('invoiceNumberSwitch');
+
+    invoiceNumberSwitch.addEventListener('change', function() {
+        if (this.checked) {
+            invoiceNumberInput.readOnly = false;
+            invoiceNumberInput.value = '';
+            invoiceNumberInput.focus();
+        } else {
+            invoiceNumberInput.readOnly = true;
+            // مقدار شماره اتوماتیک را دوباره از سرور بگیر
+            fetch('/invoices/next-number')
+                .then(res => res.json())
+                .then(data => {
+                    invoiceNumberInput.value = data.number;
+                });
+        }
+    });
+});
+     </script>
+
+    @endpush
