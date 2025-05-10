@@ -240,3 +240,30 @@ function updateInvoiceTotal() {
 function formatNumber(num) {
     return num.toLocaleString('fa-IR');
 }
+$(document).ready(function() {
+    // گرفتن شماره فاکتور اتوماتیک هنگام لود
+    function loadNextNumber() {
+        $.get('/invoices/next-number', function(data) {
+            $('#number').val(data.number);
+        });
+    }
+
+    // فقط اگر سوییچ اتوماتیک فعال باشد، شماره اتوماتیک را بگیر
+    if ($('#autoNumberSwitch').is(':checked')) {
+        loadNextNumber();
+        $('#number').prop('readonly', true);
+    } else {
+        $('#number').prop('readonly', false);
+    }
+
+    // تغییر سوییچ
+    $('#autoNumberSwitch').on('change', function() {
+        if ($(this).is(':checked')) {
+            loadNextNumber();
+            $('#number').prop('readonly', true);
+        } else {
+            $('#number').val('');
+            $('#number').prop('readonly', false);
+        }
+    });
+});

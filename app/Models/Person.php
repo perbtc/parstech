@@ -10,39 +10,11 @@ class Person extends Model
     use HasFactory;
 
     protected $fillable = [
-    'accounting_code',
-    'company_name',
-    'title',
-    'first_name',
-    'last_name',
-    'nickname',
-    'category',
-    'type',
-    'credit_limit',
-    'price_list',
-    'tax_type',
-    'national_code',
-    'economic_code',
-    'registration_number',
-    'branch_code',
-    'description',
-    'address',
-    'country',
-    'province',
-    'city',
-    'postal_code',
-    'phone',
-    'mobile',
-    'fax',
-    'phone1',
-    'phone2',
-    'phone3',
-    'email',
-    'website',
-    'birth_date',
-    'marriage_date',
-    'join_date',
-    ];
+    'accounting_code', 'type', 'first_name', 'last_name', 'nickname', 'credit_limit', 'price_list', 'tax_type',
+    'national_code', 'economic_code', 'registration_number', 'branch_code', 'description', 'address', 'country',
+    'province', 'city', 'postal_code', 'phone', 'mobile', 'fax', 'phone1', 'phone2', 'phone3', 'email', 'website',
+    'birth_date', 'marriage_date', 'join_date', 'company_name', 'title'
+];
 
     protected $table = 'persons';
 

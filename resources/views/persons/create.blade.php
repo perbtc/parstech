@@ -515,15 +515,15 @@ $(document).ready(function() {
 
     // تاریخ شمسی
     $('.datepicker').persianDatepicker({
-        format: 'YYYY-MM-DD',
-        initialValue: false,
-        autoClose: true,
-        toolbox: {
-            calendarSwitch: { enabled: false },
-            todayButton: { enabled: true },
-            submitButton: { enabled: true }
-        }
-    });
+    format: 'YYYY-MM-DD',
+    initialValue: false,
+    autoClose: true,
+    toolbox: {
+        calendarSwitch: { enabled: false },
+        todayButton: { enabled: true },
+        submitButton: { enabled: true }
+    }
+});
 
     // حساب بانکی داینامیک
     let bankAccountIndex = $('#bank-accounts .bank-account-row').length || 0;

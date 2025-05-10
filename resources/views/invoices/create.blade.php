@@ -32,25 +32,22 @@
 
             <div class="row">
                 <!-- شماره فاکتور -->
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4">
                     <div class="form-group">
-                        <label for="invoiceNumber">شماره فاکتور</label>
+                        <label class="form-label required-field" for="number">شماره فاکتور</label>
                         <div class="input-group">
-                            <input type="text" id="invoiceNumber" name="invoiceNumber"
-                                   class="form-control" value="{{ old('invoiceNumber', $nextInvoiceNumber ?? '') }}" readonly>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input"
-                                            id="invoiceNumberSwitch" onchange="toggleInvoiceNumber()">
-                                        <label class="custom-control-label" for="invoiceNumberSwitch">شماره‌گذاری دستی</label>
-                                    </div>
+                            <input type="text" name="number" id="number" class="form-control"
+                                value="{{ old('number') }}" readonly required>
+                            <div class="input-group-append ms-2">
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="autoNumberSwitch" name="auto_number" value="1" checked>
+                                    <label class="form-check-label small" for="autoNumberSwitch">شماره اتوماتیک</label>
                                 </div>
                             </div>
                         </div>
-                        @error('invoiceNumber')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                        <small class="form-text text-muted">
+                            اگر فعال باشد شماره فاکتور اتوماتیک تولید می‌شود و قابل ویرایش نیست.
+                        </small>
                     </div>
                 </div>
 
@@ -67,43 +64,40 @@
                 </div>
 
                 <!-- تاریخ -->
-                <div class="col-md-4 mb-3">
-                    <div class="form-group">
-                        <label for="date">تاریخ</label>
-                        <input type="text" id="date" name="date"
-                               class="form-control" required value="{{ old('date') }}">
-                        @error('date')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label required-field">تاریخ صدور فاکتور</label>
+                    <input type="text" name="date" id="date" class="form-control datepicker"
+                        value="{{ old('date', jdate()->format('Y-m-d')) }}" required autocomplete="off">
+                    <small class="form-text text-muted">تاریخ صدور فاکتور (ثبت فاکتور)</small>
                 </div>
+            </div>
 
                 <!-- تاریخ سررسید -->
-                <div class="col-md-4 mb-3">
-                    <div class="form-group">
-                        <label for="dueDate">تاریخ سررسید</label>
-                        <input type="text" id="dueDate" name="dueDate"
-                               class="form-control" value="{{ old('dueDate') }}">
-                        @error('dueDate')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label required-field">تاریخ سررسید</label>
+                    <input type="text" name="dueDate" id="dueDate" class="form-control datepicker"
+                        value="{{ old('dueDate') }}" required autocomplete="off">
+                    <small class="form-text text-muted">موعد پرداخت فاکتور</small>
                 </div>
+            </div>
+        </div>
 
                 <!-- مشتری -->
-                <div class="col-md-4 mb-3">
-                    <div class="form-group">
-                        <label for="customer">مشتری</label>
-                        <select id="customer" name="customer" class="form-control select2" required>
-                            @if(old('customer'))
-                                <option value="{{ old('customer') }}" selected>مشتری انتخاب شده قبلی</option>
-                            @endif
-                        </select>
-                        @error('customer')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
+
+        {{-- مشتری --}}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label required-field" for="customer_select">مشتری</label>
+                    <select id="customer_select" name="customer_id" class="form-control" required>
+                        <option value="">انتخاب مشتری...</option>
+                        {{-- گزینه‌ها با آژاکس از persons لود می‌شود --}}
+                    </select>
                 </div>
+            </div>
+        </div>
 
                 <!-- واحد پول -->
                 <div class="col-md-4 mb-3">

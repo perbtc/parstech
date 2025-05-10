@@ -21,18 +21,32 @@ public function create()
     return view('persons.create', compact('provinces'));
 }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
+
+    \Log::info('DATE_INPUTS', [
+    'birth_date' => $request->birth_date,
+    'marriage_date' => $request->marriage_date,
+    'join_date' => $request->join_date,
+]);
+
     // تبدیل تاریخ شمسی به میلادی (اگر از jalalian استفاده می‌کنی)
-    foreach (['join_date', 'birth_date', 'marriage_date'] as $dateField) {
-        if ($request->has($dateField) && $request->$dateField) {
-            try {
+foreach (['join_date', 'birth_date', 'marriage_date'] as $dateField) {
+    if ($request->has($dateField) && $request->$dateField) {
+        try {
+            // اگر تاریخ - داشت (YYYY-MM-DD)، همان قبلی
+            if (strpos($request->$dateField, '-') !== false) {
                 $request[$dateField] = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $request->$dateField)->toCarbon()->toDateString();
-            } catch (\Exception $e) {
-                $request[$dateField] = null;
             }
+            // اگر تاریخ / داشت (YYYY/MM/DD)
+            elseif (strpos($request->$dateField, '/') !== false) {
+                $request[$dateField] = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->$dateField)->toCarbon()->toDateString();
+            }
+        } catch (\Exception $e) {
+            $request[$dateField] = null;
         }
     }
+}
 
     // اعتبارسنجی
     $rules = [
@@ -56,7 +70,8 @@ public function create()
     $optionalFields = [
         'nickname', 'credit_limit', 'price_list', 'tax_type', 'national_code', 'economic_code',
         'registration_number', 'branch_code', 'description', 'postal_code', 'phone', 'mobile', 'fax',
-        'phone1', 'phone2', 'phone3', 'email', 'website', 'birth_date', 'marriage_date', 'join_date'
+        'phone1', 'phone2', 'phone3', 'email', 'website', 'birth_date', 'marriage_date', 'join_date',
+        'company_name', 'title'
     ];
     foreach ($optionalFields as $field) {
         $rules[$field] = 'nullable';

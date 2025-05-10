@@ -109,6 +109,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Invoices
+    Route::get('/invoices/next-number', [InvoiceController::class, 'getNextNumber'])->name('invoices.next-number');
+
     Route::resource('invoices', InvoiceController::class);
     Route::resource('pre-invoices', PreInvoiceController::class);
     Route::get('/quick-sale', [QuickSaleController::class, 'index'])->name('quick-sale');
@@ -129,5 +131,5 @@ Route::get('/categories/person-search', [\App\Http\Controllers\CategoryControlle
 Route::get('/provinces/{province}/cities', [ProvinceController::class, 'cities'])->name('provinces.cities');
 Route::get('/provinces/{province}/cities', [\App\Http\Controllers\ProvinceController::class, 'cities'])->name('provinces.cities');
 Route::resource('persons', \App\Http\Controllers\PersonController::class);
-
+Route::get('/invoices/next-number', [InvoiceController::class, 'getNextNumber'])->name('invoices.next-number');
 require __DIR__.'/auth.php';

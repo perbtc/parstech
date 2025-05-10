@@ -4,20 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        .tree-section {
-            margin-bottom: 1.5rem;
-        }
-        .tree-node {
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            box-shadow: 0 3px 14px rgba(0,0,0,0.08);
-        }
-        .tree-title {
-            font-weight: bold;
-            color: #0d6efd;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/persons/show.css') }}">
 @endpush
 
 @section('content')
@@ -56,6 +43,7 @@
                 </div>
             </div>
         </div>
+
         <!-- اطلاعات عمومی -->
         <div class="accordion-item tree-node">
             <h2 class="accordion-header" id="generalInfoHeading">
@@ -80,6 +68,7 @@
                 </div>
             </div>
         </div>
+
         <!-- آدرس و مکان -->
         <div class="accordion-item tree-node">
             <h2 class="accordion-header" id="addressHeading">
@@ -99,6 +88,7 @@
                 </div>
             </div>
         </div>
+
         <!-- اطلاعات تماس -->
         <div class="accordion-item tree-node">
             <h2 class="accordion-header" id="contactHeading">
@@ -122,7 +112,7 @@
             </div>
         </div>
 
-        <!-- اطلاعات حساب بانکی (درختی) -->
+        <!-- اطلاعات حساب بانکی -->
         @if($person->bankAccounts && count($person->bankAccounts))
         <div class="accordion-item tree-node">
             <h2 class="accordion-header" id="bankHeading">
@@ -132,14 +122,20 @@
             </h2>
             <div id="bankInfo" class="accordion-collapse collapse" aria-labelledby="bankHeading" data-bs-parent="#personInfoTree">
                 <div class="accordion-body">
-                    <ul class="list-group">
+                    <ul class="list-group bank-accounts">
                         @foreach($person->bankAccounts as $idx => $acc)
-                            <li class="list-group-item">
-                                <strong>بانک:</strong> {{ $acc->bank_name }} |
-                                <strong>شعبه:</strong> {{ $acc->branch ?? '-' }} |
-                                <strong>شماره حساب:</strong> {{ $acc->account_number }} |
-                                <strong>کارت:</strong> {{ $acc->card_number }} |
-                                <strong>شبا:</strong> {{ $acc->iban }}
+                            <li class="list-group-item bank-account">
+                                <div class="bank-info">
+                                    <strong>بانک:</strong> {{ $acc->bank_name }}
+                                </div>
+                                <div class="branch-info">
+                                    <strong>شعبه:</strong> {{ $acc->branch ?? '-' }}
+                                </div>
+                                <div class="account-numbers">
+                                    <div><strong>شماره حساب:</strong> {{ $acc->account_number }}</div>
+                                    <div><strong>کارت:</strong> {{ $acc->card_number }}</div>
+                                    <div><strong>شبا:</strong> {{ $acc->iban }}</div>
+                                </div>
                             </li>
                         @endforeach
                     </ul>
@@ -147,27 +143,38 @@
             </div>
         </div>
         @endif
+
         <!-- تاریخ‌ها -->
-        <div class="accordion-item tree-node">
-            <h2 class="accordion-header" id="dateHeading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dateInfo" aria-expanded="false" aria-controls="dateInfo">
-                    <span class="tree-title"><i class="bi bi-calendar"></i> تاریخ‌ها</span>
-                </button>
-            </h2>
-            <div id="dateInfo" class="accordion-collapse collapse" aria-labelledby="dateHeading" data-bs-parent="#personInfoTree">
-                <div class="accordion-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>تاریخ تولد:</strong> {{ $person->birth_date }}</li>
-                        <li class="list-group-item"><strong>تاریخ ازدواج:</strong> {{ $person->marriage_date }}</li>
-                        <li class="list-group-item"><strong>تاریخ عضویت:</strong> {{ $person->join_date }}</li>
-                    </ul>
-                </div>
-            </div>
+<div class="accordion-item tree-node">
+    <h2 class="accordion-header" id="dateHeading">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dateInfo" aria-expanded="false" aria-controls="dateInfo">
+            <span class="tree-title"><i class="bi bi-calendar"></i> تاریخ‌ها</span>
+        </button>
+    </h2>
+    <div id="dateInfo" class="accordion-collapse collapse" aria-labelledby="dateHeading" data-bs-parent="#personInfoTree">
+        <div class="accordion-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>تاریخ تولد:</strong>
+                    {{ $person->birth_date ? \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($person->birth_date))->format('Y/m/d') : 'ثبت نشده' }}
+                </li>
+                <li class="list-group-item">
+                    <strong>تاریخ ازدواج:</strong>
+                    {{ $person->marriage_date ? \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($person->marriage_date))->format('Y/m/d') : 'ثبت نشده' }}
+                </li>
+                <li class="list-group-item">
+                    <strong>تاریخ عضویت:</strong>
+                    {{ $person->join_date ? \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($person->join_date))->format('Y/m/d') : 'ثبت نشده' }}
+                </li>
+            </ul>
         </div>
+    </div>
+</div>
     </div>
 </div>
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/persons/show.js') }}"></script>
 @endpush
